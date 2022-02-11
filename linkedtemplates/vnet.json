@@ -38,12 +38,6 @@
           "description": "Subnet 2 Prefix"
         }
       },      
-      "BastionsubnetPrefix": {
-        "type": "string",
-        "metadata": {
-          "description": "Bastion Subnet Prefix"
-        }
-      },      
       "location": {
         "type": "string",
         "metadata": {
@@ -75,13 +69,6 @@
             "name": "[parameters('subnet2Name')]",
             "properties": {
               "addressPrefix": "[parameters('subnet2Prefix')]"
-              
-            }
-          },          
-          {
-            "name": "AzureBastionSubnet",
-            "properties": {
-              "addressPrefix": "[parameters('BastionsubnetPrefix')]"
               
             }
           }                    
