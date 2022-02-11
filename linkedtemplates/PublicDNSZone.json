@@ -1,0 +1,192 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ZoneName": {
+            "type": "string",
+            "metadata": {
+                "description": "DNS Zone Name"
+              }
+        },
+        "OCSPRecord": {
+            "type": "string",
+            "metadata": {
+                "description": "OCSP EXternal DNS Record"
+              }
+        },
+        "OCSPPublicIP": {
+            "type": "string",
+            "metadata": {
+                "description": "OCSP EXternal Public IP"
+              }
+        },        
+        "OWARecord": {
+            "type": "string",
+            "metadata": {
+                "description": "OWA EXternal DNS Record"
+              }
+        },
+        "AutoDiscoverRecord": {
+            "type": "string",
+            "metadata": {
+                "description": "AutoDiscover EXternal DNS Record"
+              }
+        },        
+        "OutlookRecord": {
+            "type": "string",
+            "metadata": {
+                "description": "Outlook EXternal DNS Record"
+              }
+        },                
+        "EASRecord": {
+            "type": "string",
+            "metadata": {
+                "description": "EAS EXternal DNS Record"
+              }
+        },                        
+        "SMTP1Record": {
+            "type": "string",
+            "metadata": {
+                "description": "SMTP1 EXternal DNS Record"
+              }
+        },
+        "EX1PublicIP": {
+            "type": "string",
+            "metadata": {
+                "description": "Exchange 1 EXternal Public IP"
+              }
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('ZoneName')]",
+            "type": "Microsoft.Network/dnsZones",
+            "apiVersion": "2018-05-01",
+            "location": "global",
+            "tags": {},
+            "properties": {
+            },
+            "resources": []
+        },
+        {
+        "type": "Microsoft.Network/dnszones/a",
+        "name": "[concat(parameters('ZoneName'), '/', parameters('OCSPRecord'))]",
+        "apiVersion": "2018-05-01",
+        "location": "global",
+        "dependsOn": [
+            "[parameters('ZoneName')]"
+        ],
+        "properties": {
+            "TTL": 900,
+            "ARecords": [
+                {
+                    "ipv4Address": "[parameters('OCSPPublicIP')]"
+                }
+                ]
+            }
+        },
+        {
+        "type": "Microsoft.Network/dnszones/a",
+        "name": "[concat(parameters('ZoneName'), '/', parameters('OWARecord'))]",
+        "apiVersion": "2018-05-01",
+        "location": "global",
+        "dependsOn": [
+            "[parameters('ZoneName')]"
+        ],
+        "properties": {
+            "TTL": 900,
+            "ARecords": [
+                {
+                    "ipv4Address": "[parameters('EX1PublicIP')]"
+                }
+                ]
+            }
+        },
+        {
+        "type": "Microsoft.Network/dnszones/a",
+        "name": "[concat(parameters('ZoneName'), '/', parameters('AutoDiscoverRecord'))]",
+        "apiVersion": "2018-05-01",
+        "location": "global",
+        "dependsOn": [
+            "[parameters('ZoneName')]"
+        ],
+        "properties": {
+            "TTL": 900,
+            "ARecords": [
+                {
+                    "ipv4Address": "[parameters('EX1PublicIP')]"
+                }
+                ]
+            }
+        },      
+        {
+        "type": "Microsoft.Network/dnszones/a",
+        "name": "[concat(parameters('ZoneName'), '/', parameters('OutlookRecord'))]",
+        "apiVersion": "2018-05-01",
+        "location": "global",
+        "dependsOn": [
+            "[parameters('ZoneName')]"
+        ],
+        "properties": {
+            "TTL": 900,
+            "ARecords": [
+                {
+                    "ipv4Address": "[parameters('EX1PublicIP')]"
+                }
+                ]
+            }
+        },       
+        {
+        "type": "Microsoft.Network/dnszones/a",
+        "name": "[concat(parameters('ZoneName'), '/', parameters('EASRecord'))]",
+        "apiVersion": "2018-05-01",
+        "location": "global",
+        "dependsOn": [
+            "[parameters('ZoneName')]"
+        ],
+        "properties": {
+            "TTL": 900,
+            "ARecords": [
+                {
+                    "ipv4Address": "[parameters('EX1PublicIP')]"
+                }
+                ]
+            }
+        },                           
+        {
+        "type": "Microsoft.Network/dnszones/a",
+        "name": "[concat(parameters('ZoneName'), '/', parameters('SMTP1Record'))]",
+        "apiVersion": "2018-05-01",
+        "location": "global",
+        "dependsOn": [
+            "[parameters('ZoneName')]"
+        ],
+        "properties": {
+            "TTL": 900,
+            "ARecords": [
+                {
+                    "ipv4Address": "[parameters('EX1PublicIP')]"
+                }
+                ]
+            }
+        },  
+        {
+        "type": "Microsoft.Network/dnszones/MX",
+        "name": "[concat(parameters('ZoneName'), '/', '@')]",
+        "apiVersion": "2018-05-01",
+        "location": "global",
+        "dependsOn": [
+            "[parameters('ZoneName')]"
+        ],
+        "properties": {
+            "TTL": 900,
+        "MXRecords": [
+        {
+            "preference": 0,
+            "exchange": "[concat(parameters('SMTP1Record'), '.', parameters('ZoneName'))]"
+        }
+        ]
+            }
+        }                                        
+    ]
+}

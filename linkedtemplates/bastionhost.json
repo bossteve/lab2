@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "publicIPAddressName": {
+            "type": "string",
+            "metadata": {
+                "description": "Public IP Address Name"
+            }
+        },
+        "AllocationMethod": {
+            "type": "string",
+            "metadata": {
+                "description": "Public IP Allocation Method"
+            }
+        },        
+        "vnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing virtual Network Name"
+            }
+        },                
+        "subnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing Subnet Name"
+            }
+        },                        
+        "location": {
+            "type": "string",
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('publicIPAddressName')]",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2019-04-01",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "[parameters('AllocationMethod')]"
+            }
+        },
+        {
+            "apiVersion": "2020-04-01",
+            "type": "Microsoft.Network/bastionHosts",
+            "name": "[parameters('vnetName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "IpConf",
+                        "properties": {
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIpAddresses', parameters('publicIPAddressName'))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }        
+    ]
+}

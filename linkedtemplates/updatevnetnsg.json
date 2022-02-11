@@ -1,0 +1,115 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "vnetName": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of the Virtual Network to Create"
+        }
+      },
+      "vnetprefix": {
+        "type": "string",
+        "metadata": {
+          "description": "The address range of the new VNET in CIDR format"
+        }
+      },
+      "subnet1Name": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of the subnet1 created in the new VNET"
+        }
+      },
+      "subnet1Prefix": {
+        "type": "string",
+        "metadata": {
+          "description": "The address range of the subnet1 created in the new VNET"
+        }
+      },
+      "subnet2Name": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of the subnet2 created in the new VNET"
+        }
+      },
+      "subnet2Prefix": {
+        "type": "string",
+        "metadata": {
+          "description": "The address range of the subnet2 created in the new VNET"
+        }
+      },      
+      "BastionsubnetPrefix": {
+        "type": "string",
+        "metadata": {
+          "description": "The address range of the subnet created in the new VNET"
+        }
+      },      
+      "DNSServerIP": {
+        "type": "array",
+        "metadata": {
+          "description": "The DNS address(es) of the DNS Server(s) used by the VNET"
+        }
+      },
+      "NetworkSecurityGroupName": {
+        "type": "string",
+        "metadata": {
+          "description": "Network Security Group Name"
+        }
+      },      
+      "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Location for all resources."
+        }
+      }
+    },
+  "variables": {
+      "NetworkSecurityGroupID": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('NetworkSecurityGroupName'))]"
+  },    
+    "resources": [
+      {
+        "type": "Microsoft.Network/virtualNetworks",
+        "name": "[parameters('vnetName')]",
+        "apiVersion": "2020-04-01",
+        "location": "[parameters('location')]",
+        "properties": {
+          "addressSpace": {
+            "addressPrefixes": [
+              "[parameters('vnetprefix')]"
+            ]
+          },
+          "dhcpOptions": {
+            "dnsServers": "[parameters('DNSServerIP')]"
+          },          
+          "subnets": [
+            {
+              "name": "[parameters('subnet1Name')]",
+              "properties": {
+                "addressPrefix": "[parameters('subnet1Prefix')]",
+                "networkSecurityGroup": {
+                  "id": "[variables('NetworkSecurityGroupID')]"
+                }                
+              }
+            },
+            {
+              "name": "[parameters('subnet2Name')]",
+              "properties": {
+                "addressPrefix": "[parameters('subnet2Prefix')]",
+                "networkSecurityGroup": {
+                  "id": "[variables('NetworkSecurityGroupID')]"
+                }                                
+              }
+            },            
+            {
+              "name": "AzureBastionSubnet",
+              "properties": {
+                "addressPrefix": "[parameters('BastionsubnetPrefix')]"
+                
+              }
+            }                    
+          ]
+        }
+      }
+    ]
+  }
+  

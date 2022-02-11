@@ -1,0 +1,92 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "vnetName": {
+        "type": "string",
+        "metadata": {
+          "description": "VNet name"
+        }
+      },
+      "vnetprefix": {
+        "type": "string",
+        "metadata": {
+          "description": "VNet prefix"
+        }
+      },
+      "subnet1Name": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 1 Name"
+        }
+      },      
+      "subnet1Prefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 1 Prefix"
+        }
+      },
+      "subnet2Name": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 2 Name"
+        }
+      },      
+      "subnet2Prefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 2 Prefix"
+        }
+      },      
+      "BastionsubnetPrefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Bastion Subnet Prefix"
+        }
+      },      
+      "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Region of Resources"
+        }
+      }
+    },
+  "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[parameters('vnetName')]",
+      "apiVersion": "2020-04-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetprefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('subnet1Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet1Prefix')]"
+              
+            }
+          },
+          {
+            "name": "[parameters('subnet2Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet2Prefix')]"
+              
+            }
+          },          
+          {
+            "name": "AzureBastionSubnet",
+            "properties": {
+              "addressPrefix": "[parameters('BastionsubnetPrefix')]"
+              
+            }
+          }                    
+        ]
+      }
+    }
+  ]
+}

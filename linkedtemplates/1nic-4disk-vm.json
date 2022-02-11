@@ -1,0 +1,254 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "computerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Computer Name"
+            }
+        },
+        "computerIP": {
+            "type": "string",
+            "metadata": {
+                "description": "Computer IP Address"
+            }
+        },
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },            
+        "AutoShutdownEnabled": {
+            "type": "string",
+          "metadata": {
+            "description": "Enable or Disable Auto-Shutdown"
+          }
+        },                    
+        "AutoShutdownTime": {
+            "type": "string",
+          "metadata": {
+            "description": "Time to Shutdown VM"
+          }
+        },            
+        "AutoShutdownEmail": {
+            "type": "string",      
+            "metadata": {
+                "description": "Notification Email for Auto-Shutdown"
+            }
+        },                                             
+        "Publisher": {
+            "type": "string",
+            "metadata": {
+                "description": "Image Publisher"
+            }
+        },
+        "Offer": {
+            "type": "string",
+            "metadata": {
+                "description": "Image Publisher Offer"
+            }
+        },            
+        "OSVersion": {
+            "type": "string",
+            "metadata": {
+                "description": "OS Version"
+            }
+        },
+        "licenseType": {
+            "type": "string",
+            "metadata": {
+                "description": "License Type (Windows_Server or None)"
+            }
+        },     
+        "DataDisk1Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Data Disk Name 1"
+            }
+        },
+        "DataDisk2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Data Disk Name 2"
+            }
+        }, 
+        "PageFileDiskName": {
+            "type": "string",
+            "metadata": {
+                "description": "PageFile Disk Name"
+            }
+        },                             
+        "VMSize": {
+            "type": "string",
+            "metadata": {
+                "description": "VMSize"
+            }
+        },        
+        "vnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing VNET Name that contains the domain controller"
+            }
+        },
+        "subnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing subnet name that contains the domain controller"
+          }
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Administrator of the new VM and Domain"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The password for the Administrator account of the new VM and Domain"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Region of Resources"
+            }
+        }
+    },
+    "variables": {
+        "storageAccountType": "Premium_LRS",
+        "imagePublisher": "[parameters('Publisher')]",
+        "imageOffer": "[parameters('Offer')]",
+        "imageSKU": "[parameters('OSVersion')]",
+        "DataDiskSize": 50,   
+        "PageFileDiskSize": 10,                               
+        "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
+        "VMId": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('computerName'))]",
+        "NicName": "[concat(parameters('computerName'),'-nic')]",
+        "NicIPAddress": "[parameters('computerIP')]"
+    },
+    "resources": [
+        {
+            "name": "[variables('NicName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-11-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[variables('NicIPAddress')]",
+                            "subnet": {
+                                "id": "[variables('subnetId')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },      
+        {
+            "name": "[parameters('computerName')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-03-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces',variables('NicName'))]"
+            ],
+            "properties": {
+                "licenseType": "[parameters('licenseType')]",
+                "hardwareProfile": {
+                    "vmSize": "[parameters('VMSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('computerName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('imagePublisher')]",
+                        "offer": "[variables('imageOffer')]",
+                        "sku": "[variables('imageSKU')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[concat(parameters('computerName'),'_OSDisk')]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "[variables('storageAccountType')]"
+                        }
+                    },
+                    "dataDisks": [
+                        {
+                            "name": "[concat(parameters('computerName'),'_',parameters('DataDisk1Name'))]",
+                            "caching": "None",
+                            "diskSizeGB": "[variables('DataDiskSize')]",
+                            "lun": 0,
+                            "createOption": "Empty",
+                                "managedDisk": {
+                                    "storageAccountType": "[variables('storageAccountType')]"
+                                }
+                        },
+                        {
+                            "name": "[concat(parameters('computerName'),'_',parameters('DataDisk2Name'))]",
+                            "caching": "None",
+                            "diskSizeGB": "[variables('DataDiskSize')]",
+                            "lun": 1,
+                            "createOption": "Empty",
+                                "managedDisk": {
+                                    "storageAccountType": "[variables('storageAccountType')]"
+                                }
+                        },
+                        {
+                            "name": "[concat(parameters('computerName'),'_',parameters('PageFileDiskName'))]",
+                            "caching": "None",
+                            "diskSizeGB": "[variables('PageFileDiskSize')]",
+                            "lun": 2,
+                            "createOption": "Empty",
+                                "managedDisk": {
+                                    "storageAccountType": "[variables('storageAccountType')]"
+                                }
+                        }                                                                                            
+                    ]                   
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('NicName'))]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('AutoShutdownEnabled'),'Yes')]",
+            "type": "microsoft.devtestlab/schedules",
+            "apiVersion": "2018-09-15",
+            "name": "[concat('shutdown-computevm-',parameters('computerName'))]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines',parameters('computerName'))]"
+            ],          
+            "properties": {
+                "status": "Enabled",
+                "taskType": "ComputeVmShutdownTask",
+                "dailyRecurrence": {
+                    "time": "[parameters('AutoShutdownTime')]"
+                },
+                "timeZoneId": "[parameters('TimeZone')]",
+                "notificationSettings": {
+                    "status": "Enabled",
+                    "timeInMinutes": 30,
+                    "emailRecipient": "[parameters('AutoShutdownEmail')]",
+                    "notificationLocale": "en"
+                },
+                "targetResourceId": "[variables('VMId')]"
+            }
+        }              
+    ]
+}

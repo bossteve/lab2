@@ -1,0 +1,84 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+    "networkSecurityGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "VNet name"
+      }
+    },
+    "OCSPPrivateIP": {
+      "type": "string",
+      "metadata": {
+        "description": "OCSP Private IP Address"
+      }
+    },    
+    "EXPrivateIP": {
+      "type": "string",
+      "metadata": {
+        "description": "Exchange Private IP Address"
+      }
+    },    
+    "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Region of Resources"
+        }
+      }
+    },
+    "resources": [
+      {
+        "apiVersion": "2019-04-01",
+        "type": "Microsoft.Network/networkSecurityGroups",
+        "name": "[parameters('networkSecurityGroupName')]",
+        "location": "[parameters('location')]",
+        "properties": {
+          "securityRules": [
+            {
+              "name": "HTTP",
+              "properties": {
+                "description": "Opens Port HTTP (Port 80/TCP)",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "80",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "[parameters('OCSPPrivateIP')]",
+                "access": "Allow",
+                "priority": 100,
+                "direction": "Inbound"
+              }
+            },
+            {
+                "name": "HTTPS",
+                "properties": {
+                  "description": "Opens Port HTTPS (Port 443/TCP)",
+                  "protocol": "Tcp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "443",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "[parameters('EXPrivateIP')]",
+                  "access": "Allow",
+                  "priority": 200,
+                  "direction": "Inbound"
+                }
+            },
+            {
+                "name": "SMTP",
+                "properties": {
+                  "description": "Opens Port SMTP (Port 25/TCP)",
+                  "protocol": "Tcp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "25",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "[parameters('EXPrivateIP')]",
+                  "access": "Allow",
+                  "priority": 300,
+                  "direction": "Inbound"
+                }
+            }                                    
+          ]
+        }
+      }
+    ]
+  }

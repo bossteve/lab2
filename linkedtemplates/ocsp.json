@@ -1,0 +1,119 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "computerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Computer Name"
+            }
+        },
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },              
+        "NetBiosDomain": {
+            "type": "string",
+            "metadata": {
+                "description": "NetBios Domain Name"
+            }
+        },                                        
+        "InternaldomainName": {
+            "type": "string",
+            "metadata": {
+                "description": "The FQDN of the AD Domain created "
+          }
+        },
+        "ExternaldomainName": {
+            "type": "string",
+            "metadata": {
+                "description": "The External FQDN of the AD Domain created "
+          }
+        },
+        "IssuingCAName": {
+            "type": "string",
+            "metadata": {
+                "description": "Issuing CA Name"
+            }
+        },
+        "RootCAName": {
+            "type": "string",
+            "metadata": {
+                "description": "Root CA Name"
+            }
+        },        
+        "location": {
+            "type": "string",
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Administrator of the new VM and Domain"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+          "metadata": {
+            "description": "The password for the Administrator account of the new VM and Domain"
+          }
+        },         
+        "_artifactsLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of resources, such as templates and DSC modules, that the template depends on"
+            }
+        },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Auto-generated token to access _artifactsLocation"
+            }
+        }                
+    },
+    "variables": {
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/OCSP.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "OCSP.ps1\\OCSP"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('computerName'),'/Microsoft.Powershell.DSC')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publisher": "Microsoft.Powershell",
+                "type": "DSC",
+                "typeHandlerVersion": "2.19",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "ModulesUrl": "[variables('modulesUrl')]",
+                    "ConfigurationFunction": "[variables('configurationFunction')]",
+                        "Properties": {
+                            "computerName": "[parameters('computerName')]",
+                            "TimeZone": "[parameters('TimeZone')]",                                                        
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
+                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
+                            "ExternaldomainName": "[parameters('ExternaldomainName')]",  
+                            "IssuingCAName": "[parameters('IssuingCAName')]",
+                            "RootCAName": "[parameters('RootCAName')]",                            
+                            "AdminCreds": {
+                                "UserName": "[parameters('adminUsername')]",
+                                "Password": "PrivateSettingsRef:AdminPassword"                                                                                   
+                            }
+
+                        }
+                },
+                "protectedSettings": {
+                    "Items": {
+                        "AdminPassword": "[parameters('adminPassword')]"
+                    }
+                }                
+            }
+        }
+    ]
+}

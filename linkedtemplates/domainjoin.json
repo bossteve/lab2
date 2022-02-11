@@ -1,0 +1,73 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "computerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Computer Name"
+            }
+        },
+        "domainName": {
+            "type": "string",
+          "metadata": {
+            "description": "The FQDN of the AD Domain created "
+          }
+        }, 
+        "OUPath": {
+          "type": "string",
+          "metadata": {
+              "description": "Organizational Unit Path"
+          }
+        },        
+        "domainJoinOptions": {
+          "type": "int",
+          "defaultValue": 3,
+        "metadata": {
+            "description": "Set of bit flags that define the join options. Default value of 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx"
+          }
+        },                       
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Administrator of the new VM and Domain"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+          "metadata": {
+            "description": "The password for the Administrator account of the new VM and Domain"
+          }
+        },
+        "location": {
+            "type": "string",
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        }        
+    },
+    "resources": [
+        {
+          "name": "[concat(parameters('computerName'), '/DomainJoin')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "JsonADDomainExtension",
+                "typeHandlerVersion": "1.3",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                "Name": "[parameters('domainName')]",
+                "User": "[concat(parameters('domainName'), '\\', parameters('adminUsername'))]",
+                "OUPath": "[parameters('OUPath')]",
+                "Restart": "true",
+                "Options": "[parameters('domainJoinOptions')]"
+                },
+                "protectedSettings": {
+                "Password": "[parameters('adminPassword')]"
+                }
+            }
+        }
+    ]
+}
