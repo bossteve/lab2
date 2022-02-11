@@ -24,14 +24,14 @@
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Offline Root CA Algorithm"
+                "description": "Root CA Algorithm"
         }
         },   
         "RootCAKeyLength": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Offline Root CA Key Length"
+                "description": "Root CA Key Length"
         }
         },                    
         "domainName": {
