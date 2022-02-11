@@ -573,7 +573,6 @@
     "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",    
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
-    "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]", 
     "dc1lastoctet": "101",           
@@ -643,10 +642,7 @@
               },
               "subnet2Prefix": {
                 "value": "[variables('vnet1subnet2Prefix')]"
-              },              
-              "BastionsubnetPrefix": {
-                "value": "[variables('vnet1BastionsubnetPrefix')]"
-              },              
+              },             
               "location": {
                   "value": "[resourceGroup().location]"
               }
@@ -796,9 +792,6 @@
               },                                                                                                            
               "subnet2Prefix": {
                 "value": "[variables('vnet1subnet2Prefix')]"
-              },               
-              "BastionsubnetPrefix": {
-                "value": "[variables('vnet1BastionsubnetPrefix')]"
               },                         
               "DNSServerIP": {
                 "value": [
