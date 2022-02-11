@@ -14,6 +14,13 @@
         "description": "OCSP Private IP Address"
       }
     },    
+    "AllowedRDPIP": {
+      "type": "string",
+      "defaultValue": "64.112.221.7",
+      "metadata": {
+        "description": "RDP allowed IP Address"
+      }
+    },
     "location": {
         "type": "string",
         "metadata": {
@@ -36,7 +43,7 @@
                 "protocol": "*",
                 "sourcePortRange": "*",
                 "destinationPortRange": "3389",
-                "sourceAddressPrefix": "64.112.221.7/24",
+                "sourceAddressPrefix": "[parameters('AllowedRDPIP')]",
                 "destinationAddressPrefix": "[parameters('JumpboxPrivateIP')]",
                 "access": "Allow",
                 "priority": 100,
