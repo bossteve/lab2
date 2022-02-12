@@ -46,7 +46,7 @@ Configuration ROOTCA
         {
             Ensure = 'Present'
 	        Credential = $Creds	
-            CAType = 'StandaloneRootCA'
+            CAType = 'EnterpriseRootCa'
             CACommonName = $RootCAName
             CADistinguishedNameSuffix = $Node.CADistinguishedNameSuffix
             ValidityPeriod = 'Years'
