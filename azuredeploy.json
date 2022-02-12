@@ -1365,7 +1365,7 @@
       "apiVersion": "2019-10-01",
       "name": "configurerootca",
       "dependsOn": [
-        "createous"
+        "createsites"
       ],      
       "properties": {
           "mode": "Incremental",
