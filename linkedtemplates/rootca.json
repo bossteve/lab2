@@ -24,7 +24,7 @@
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Root CA Algorithm"
+                "description": "Enterprise CA Algorithm"
         }
         },   
         "RootCAKeyLength": {

@@ -339,9 +339,9 @@
     },                     
     "RootCAName": {
       "type": "string",
-      "defaultValue": "Offline Root CA",
+      "defaultValue": "Emterprise Root CA",
       "metadata": {
-          "description": "Offline Root CA Name"
+          "description": "Enterprise Root CA Name"
       }
     },                    
     "IssuingCAName": {
@@ -359,7 +359,7 @@
           "SHA1"
         ],
       "metadata": {
-          "description": "Offline Root CA Algorithm"
+          "description": "Enterprise Root CA Algorithm"
       }
     },    
     "RootCAKeyLength": {
@@ -370,7 +370,7 @@
           "2048"
         ],
       "metadata": {
-          "description": "Offline Root CA Key Length"
+          "description": "Enterprise Root CA Key Length"
       }
     },                                
     "IssuingCAHashAlgorithm": {
@@ -415,7 +415,7 @@
         "2016-Datacenter"
       ],      
       "metadata": {
-          "description": "Offline Root CA OS Version"
+          "description": "Enterprise Root CA OS Version"
       }
     },            
     "ICAOSVersion": {
@@ -487,7 +487,7 @@
         "type": "string",
         "defaultValue": "Standard_B1ms",
         "metadata": {
-            "description": "Offline Root CA VMSize"
+            "description": "Enterprise Root CA VMSize"
         }
     },
     "ICAVMSize": {

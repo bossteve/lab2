@@ -15,12 +15,16 @@ Configuration ROOTCA
     Import-DscResource -ModuleName ActiveDirectoryCSDsc
     Import-DscResource -ModuleName xPSDesiredStateConfiguration
 
+    Import-DscResource -Module ActiveDirectoryCSDsc # Used for Certificate Authority
+    Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
+
     [System.Management.Automation.PSCredential ]$Creds = New-Object System.Management.Automation.PSCredential ("$($AdminCreds.UserName)", $AdminCreds.Password)
  
     Node localhost
     {
         # Assemble the Local Admin Credentials
         # Install the ADCS Certificate Authority
+
         WindowsFeature ADCSCA 
         {
             Name = 'ADCS-Cert-Authority'
@@ -40,6 +44,14 @@ Configuration ROOTCA
             DestinationPath = 'C:\MachineConfig'
             Ensure = "Present"
         }
+        ADCSWebEnrollment ConfigWebEnrollment
+        {
+            Ensure = 'Present'
+            Credential = $DomainCreds
+            IsSingleInstance = 'Yes'
+            DependsOn = '[AdcsCertificationAuthority]CertificateAuthority'
+        }
+        
 
         # Configure the CA as Standalone Root CA
         ADCSCertificationAuthority CertificateAuthority
@@ -56,6 +68,7 @@ Configuration ROOTCA
             KeyLength = $RootCAKeyLength
             IsSingleInstance = 'Yes'
             DependsOn = "[WindowsFeature]ADCSCA"
+            OverwriteExistingCAinDS = $True
         }
  
         WindowsFeature RSAT-ADCS 
@@ -71,6 +84,13 @@ Configuration ROOTCA
             Name = 'RSAT-ADCS-Mgmt' 
             DependsOn = '[AdcsCertificationAuthority]CertificateAuthority'
         }
+
+        WindowsFeature Web-Mgmt-Console
+        { 
+            Ensure = 'Present' 
+            Name = 'Web-Mgmt-Console' 
+            DependsOn = '[AdcsWebEnrollment]ConfigWebEnrollment'
+        } 
 
         TimeZone SetTimeZone
         {
@@ -88,12 +108,12 @@ Configuration ROOTCA
                 # Get-CACrlDistributionPoint | Where-Object {$_.Uri -like 'file*'} | Remove-CACrlDistributionPoint -Force
 
                 # # Check for and if not present add LDAP CDP Location
-                # $LDAPCDPURI = Get-CACrlDistributionPoint | Where-object {$_.uri -like "ldap:///CN=<CATruncatedName><CRLNameSuffix>"+"*"}
-                # IF ($LDAPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "ldap:///CN=<CATruncatedName><CRLNameSuffix>,CN=<ServerShortName>,CN=CDP,CN=Public Key Services,CN=Services,<ConfigurationContainer><CDPObjectClass>" -AddToCertificateCDP -AddToCrlCdp -Force}
+                $LDAPCDPURI = Get-CACrlDistributionPoint | Where-object {$_.uri -like "ldap:///CN=<CATruncatedName><CRLNameSuffix>"+"*"}
+                IF ($LDAPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "ldap:///CN=<CATruncatedName><CRLNameSuffix>,CN=<ServerShortName>,CN=CDP,CN=Public Key Services,CN=Services,<ConfigurationContainer><CDPObjectClass>" -AddToCertificateCDP -AddToCrlCdp -Force}
 
                 # # Check for and if not present add HTTP CDP Location
-                # $HTTPCDPURI = Get-CACrlDistributionPoint | Where-object {$_.uri -like "http://crl"+"*"}
-                # IF ($HTTPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "http://crl.$using:domainName/CertEnroll/<CAName><CRLNameSuffix><DeltaCRLAllowed>.crl" -AddToCertificateCDP -AddToFreshestCrl -Force}
+                $HTTPCDPURI = Get-CACrlDistributionPoint | Where-object {$_.uri -like "http://crl"+"*"}
+                IF ($HTTPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "http://crl.$using:domainName/CertEnroll/<CAName><CRLNameSuffix><DeltaCRLAllowed>.crl" -AddToCertificateCDP -AddToFreshestCrl -Force}
 
                 # Remove All Default AIA Locations
                 # Get-CAAuthorityInformationAccess | Where-Object {$_.Uri -like 'ldap*'} | Remove-CAAuthorityInformationAccess -Force
