@@ -1690,6 +1690,63 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "configexchange1",
+      "dependsOn": [
+        "installexchange1",
+        "installexchange1-cu22"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/configexchange16.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },              
+              "ExternaldomainName": {
+                  "value": "[variables('ExternaldomainName')]"
+              },                
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },
+              "BaseDN": {
+                  "value": "[variables('BaseDN')]"
+              },                            
+              "ConfigDC": {
+                  "value": "[variables('dc1name')]"
+              },       
+              "CAServerIP": {
+                  "value": "[variables('icaIP')]"
+              },                                                                                                                                                                                       
+              "Site": {
+                  "value": "Site1"
+              },                            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                           
   ]
 }
