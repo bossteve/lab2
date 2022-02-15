@@ -15,9 +15,6 @@ Configuration ROOTCA
     Import-DscResource -ModuleName ActiveDirectoryCSDsc
     Import-DscResource -ModuleName xPSDesiredStateConfiguration
 
-    Import-DscResource -Module ActiveDirectoryCSDsc # Used for Certificate Authority
-    Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
-
     [System.Management.Automation.PSCredential ]$Creds = New-Object System.Management.Automation.PSCredential ("$($AdminCreds.UserName)", $AdminCreds.Password)
  
     Node localhost
@@ -47,7 +44,7 @@ Configuration ROOTCA
         ADCSWebEnrollment ConfigWebEnrollment
         {
             Ensure = 'Present'
-            Credential = $DomainCreds
+            Credential = $Creds
             IsSingleInstance = 'Yes'
             DependsOn = '[AdcsCertificationAuthority]CertificateAuthority'
         }
@@ -108,12 +105,12 @@ Configuration ROOTCA
                 # Get-CACrlDistributionPoint | Where-Object {$_.Uri -like 'file*'} | Remove-CACrlDistributionPoint -Force
 
                 # # Check for and if not present add LDAP CDP Location
-                $LDAPCDPURI = Get-CACrlDistributionPoint | Where-object {$_.uri -like "ldap:///CN=<CATruncatedName><CRLNameSuffix>"+"*"}
-                IF ($LDAPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "ldap:///CN=<CATruncatedName><CRLNameSuffix>,CN=<ServerShortName>,CN=CDP,CN=Public Key Services,CN=Services,<ConfigurationContainer><CDPObjectClass>" -AddToCertificateCDP -AddToCrlCdp -Force}
+                #$LDAPCDPURI = Get-CACrlDistributionPoint | Where-object {$_.uri -like "ldap:///CN=<CATruncatedName><CRLNameSuffix>"+"*"}
+                #IF ($LDAPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "ldap:///CN=<CATruncatedName><CRLNameSuffix>,CN=<ServerShortName>,CN=CDP,CN=Public Key Services,CN=Services,<ConfigurationContainer><CDPObjectClass>" -AddToCertificateCDP -AddToCrlCdp -Force}
 
                 # # Check for and if not present add HTTP CDP Location
-                $HTTPCDPURI = Get-CACrlDistributionPoint | Where-object {$_.uri -like "http://crl"+"*"}
-                IF ($HTTPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "http://crl.$using:domainName/CertEnroll/<CAName><CRLNameSuffix><DeltaCRLAllowed>.crl" -AddToCertificateCDP -AddToFreshestCrl -Force}
+                #$HTTPCDPURI = Get-CACrlDistributionPoint | Where-object {$_.uri -like "http://crl"+"*"}
+                #IF ($HTTPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "http://crl.$using:domainName/CertEnroll/<CAName><CRLNameSuffix><DeltaCRLAllowed>.crl" -AddToCertificateCDP -AddToFreshestCrl -Force}
 
                 # Remove All Default AIA Locations
                 # Get-CAAuthorityInformationAccess | Where-Object {$_.Uri -like 'ldap*'} | Remove-CAAuthorityInformationAccess -Force
