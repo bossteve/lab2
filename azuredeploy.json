@@ -1847,7 +1847,7 @@
       }
     },
     {
-      "condition": "[equals(parameters('FSOSVersion'),'2019-Datacenter')]",      
+      "condition": "[equals(parameters('Server1OSVersion'),'2019-Datacenter')]",      
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DomainJoinServer1-19",
@@ -1886,7 +1886,7 @@
       }
     },                    
     {
-      "condition": "[equals(parameters('FSOSVersion'),'2016-Datacenter')]",      
+      "condition": "[equals(parameters('Server1OSVersion'),'2016-Datacenter')]",      
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DomainJoinServer1-16",
