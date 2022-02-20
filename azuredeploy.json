@@ -414,6 +414,12 @@
     "DC1VMSize": {
         "type": "string",
         "defaultValue": "Standard_B1ms",
+        "allowedValues": [
+          "Standard_B1ms",
+          "Standard_B2s",
+          "Standard_D2s_v3",
+          "Standard_D8s_v3"
+        ],
         "metadata": {
             "description": "Domain Controller1 VMSize"
         }
@@ -421,6 +427,12 @@
     "Server1VMSize": {
         "type": "string",
         "defaultValue": "Standard_B1ms",
+        "allowedValues": [
+          "Standard_B1ms",
+          "Standard_B2s",
+          "Standard_D2s_v3",
+          "Standard_D8s_v3"
+        ],
         "metadata": {
             "description": "Enterprise Root CA VMSize"
         }
