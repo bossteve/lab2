@@ -1726,10 +1726,7 @@
               },                            
               "ConfigDC": {
                   "value": "[variables('dc1name')]"
-              },       
-              "CAServerIP": {
-                  "value": "[variables('icaIP')]"
-              },                                                                                                                                                                                       
+              },                                                                                                                                                                                  
               "Site": {
                   "value": "Site1"
               },                            

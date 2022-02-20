@@ -37,13 +37,7 @@
             "metadata": {
                 "description": "Domain Controller used for Exchange Config"
             }
-        },                                                         
-        "CAServerIP": {
-            "type": "string",
-            "metadata": {
-                "description": "CA Server IP"
-            }
-        },                                             
+        },                                            
         "Site": {
             "type": "string",
             "metadata": {
@@ -105,8 +99,7 @@
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",   
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
                             "BaseDN": "[parameters('BaseDN')]",                                                                                                               
-                            "ConfigDC": "[parameters('ConfigDC')]",                                                                                     
-                            "CAServerIP": "[parameters('CAServerIP')]",                                                                                                                                                                                
+                            "ConfigDC": "[parameters('ConfigDC')]",                                                                                                                                                                              
                             "Site": "[parameters('Site')]",                                                                                                                                                                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
