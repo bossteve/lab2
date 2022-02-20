@@ -9,6 +9,7 @@
         [String]$BaseDN,
         [String]$ConfigDC,
         [String]$Site,
+        [string]$CertSubjectName,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -37,7 +38,7 @@
                 #$Password = $DomainCreds.Password
 
                 # Get Certificate 2016 Certificate
-                #$CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=*.$using:ExternalDomainName"}
+                #$CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=$using:CertSubjectName"}
                 #IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=owa2016.$using:ExternalDomainName" -DNSName "owa2016.$using:ExternalDomainName","autodiscover.$using:ExternalDomainName","autodiscover2016.$using:ExternalDomainName","outlook2016.$using:ExternalDomainName","eas2016.$using:ExternalDomainName" -CertStoreLocation "cert:\LocalMachine\My"}
 
                 #$thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=*.$using:ExternalDomainName"}).Thumbprint
@@ -61,7 +62,7 @@
             SetScript =
             {
                 # Get Certificate 2016 Certificate
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=*.$using:ExternalDomainName"}).Thumbprint
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=$using:CertSubjectName"}).Thumbprint
                 
                 # Connect to Exchange
                 $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$using:computerName.$using:InternalDomainName/PowerShell/"

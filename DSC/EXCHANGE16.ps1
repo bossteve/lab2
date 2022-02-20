@@ -5,6 +5,10 @@
         [String]$NetBiosDomain,
         [String]$DBName,
         [String]$SetupDC,
+        [string]$CertSubjectName,
+        [Srting]$CertURL,
+        [string]$CertSubjectName,
+        [securestring]$CertPassword,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -53,6 +57,9 @@
             SetScript =
             {
                 $Install = Get-ChildItem -Path S:\ExchangeInstall\DeployExchange.cmd -ErrorAction 0
+                mkdir s:\cert
+                wget -Uri $CertURL -OutFile "s:\cert\cert.pfx"
+                Import-PfxCertificate -FilePath "s:\cert\cert.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $CertPassword 
                 IF ($Install -eq $null) {   
                 Set-Content -Path S:\ExchangeInstall\DeployExchange.cmd -Value "J:\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Install /Role:Mailbox /DbFilePath:M:\$using:DBName\$using:DBName.edb /LogFolderPath:M:\$using:DBName /MdbName:$using:DBName /dc:$using:SetupDC"
                 S:\ExchangeInstall\DeployExchange.cmd

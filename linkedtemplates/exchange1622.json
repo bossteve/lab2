@@ -37,7 +37,13 @@
           "metadata": {
             "description": "The password for the Administrator account of the new VM and Domain"
           }
-        },                
+        },   
+        "CertSubjectName": {
+            "type": "string",
+            "metadata":{
+                "description": "The exact subject name for your cert pfx"
+            }
+        },             
         "location": {
             "type": "string",
           "metadata": {
@@ -94,6 +100,7 @@
                             "DBName": "[parameters('DBName')]",       
                             "SetupDC": "[parameters('SetupDC')]",   
                             "CertURL": "[parameters('CertURL')]",
+                            "CertSubjectName": "[parameters('CertSubjectName')]",
                             "CertPassword": "PrivateSettingsRef:CertPassword",                                                                                                     
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

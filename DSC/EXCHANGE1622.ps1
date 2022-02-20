@@ -6,6 +6,7 @@
         [String]$DBName,
         [String]$SetupDC,
         [Srting]$CertURL,
+        [string]$CertSubjectName,
         [securestring]$CertPassword,
         [System.Management.Automation.PSCredential]$Admincreds
     )

@@ -49,8 +49,14 @@
         "type": "securestring",
             "metadata": {
             "description": "password for PFX file"
-        }
-    } ,         
+            }
+        },     
+        "CertSubjectName": {
+            "type": "string",
+            "metadata":{
+                "description": "The exact subject name for your cert pfx"
+            }
+        },
         "location": {
             "type": "string",
           "metadata": {
@@ -93,7 +99,8 @@
                             "DBName": "[parameters('DBName')]",       
                             "SetupDC": "[parameters('SetupDC')]", 
                             "CertURL": "[parameters('CertURL')]",
-                            "CertPassword": "[parameters('CertPassword')]",                                                                                                       
+                            "CertSubjectName": "[parameters('CertSubjectName')]",
+                            "CertPassword": "PrivateSettingsRef:CertPassword",                                                                                                       
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
@@ -102,7 +109,8 @@
                     },
                     "protectedSettings": {
                         "Items": {
-                            "AdminPassword": "[parameters('adminPassword')]"
+                            "AdminPassword": "[parameters('adminPassword')]",
+                            "CertPassword": "[parameters('CertPassword')]"
                         }
                     }                                        
                 }

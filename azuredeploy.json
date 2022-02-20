@@ -185,7 +185,14 @@
       "metadata": {
         "description": "The password for the pfx"
       }
-    },                                       
+    }, 
+    "CertSubjectName": {
+      "type": "string",
+      "defaultValue": "*.wingtip.toys",
+      "metadata":{
+        "description": "The exact subject name for your cert pfx"
+      }
+    },                                     
     "ExchangeOrgName": {
       "type": "string",
       "defaultValue": "wingtip",
@@ -195,7 +202,7 @@
     },
       "CU22": {
       "type": "string",
-      "defaultValue": "No",
+      "defaultValue": "Yes",
       "allowedValues": [
         "Yes",
         "No"
@@ -1655,7 +1662,10 @@
               },
               "CertPassword": {
                 "value": "[parameters('CertPassword')]"
-              },                                                                                                                                                                                                                                                                                                                                 
+              },
+              "CertSubjectName":{
+                "value": "[parameters('CertSubjectName')]"
+              },                                                                                                                                                                                                                                                                                                                             
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -1754,7 +1764,10 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                                                                                                                                                                                                                                      
+              },  
+              "CertSubjectName":{
+                "value": "[parameters('CertSubjectName')]"
+              },                                                                                                                                                                                                                                                                                                                                                    
               "location": {
                   "value": "[resourceGroup().location]"
               },          
