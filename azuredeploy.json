@@ -180,10 +180,10 @@
         "description": "URL to PFX file.  Must be wildcart (for now)"
         }
       },  
-    "CertPassword": {
+    "CertPassword":  {
       "type": "securestring",
-        "metadata": {
-          "description": "password for PFX file"
+      "metadata": {
+        "description": "The password for the pfx"
       }
     },                                       
     "ExchangeOrgName": {
