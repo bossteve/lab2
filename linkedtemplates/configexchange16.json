@@ -37,7 +37,14 @@
             "metadata": {
                 "description": "Domain Controller used for Exchange Config"
             }
-        },                                            
+        },   
+        "CertSubjectName": {
+            "type": "string",
+            "defaultValue": "*.wingtip.toys",
+            "metadata":{
+                "description": "The exact subject name for your cert pfx"
+            }
+        },                                          
         "Site": {
             "type": "string",
             "metadata": {
@@ -99,7 +106,8 @@
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",   
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
                             "BaseDN": "[parameters('BaseDN')]",                                                                                                               
-                            "ConfigDC": "[parameters('ConfigDC')]",                                                                                                                                                                              
+                            "ConfigDC": "[parameters('ConfigDC')]",
+                            "CertSubjectName": "[parameters('CertSubjectName')]",                                                                                                                                                                          
                             "Site": "[parameters('Site')]",                                                                                                                                                                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
