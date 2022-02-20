@@ -1713,7 +1713,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                                                                                                                                                                                                                                      
+              },                                                                                                     
+              "CertURL": {
+                "value": "[parameters('CertURL')]"
+              },
+              "CertPassword": {
+                "value": "[parameters('CertPassword')]"
+              },
+              "CertSubjectName":{
+                "value": "[parameters('CertSubjectName')]"
+              },                                                                                                                                                                                                                                                                                                                                                
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
