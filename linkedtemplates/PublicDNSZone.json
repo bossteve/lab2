@@ -8,16 +8,16 @@
                 "description": "DNS Zone Name"
               }
         },
-        "OCSPRecord": {
+        "Server1Record": {
             "type": "string",
             "metadata": {
-                "description": "OCSP EXternal DNS Record"
+                "description": "Server1 EXternal DNS Record"
               }
         },
-        "OCSPPublicIP": {
+        "Server1PublicIP": {
             "type": "string",
             "metadata": {
-                "description": "OCSP EXternal Public IP"
+                "description": "Server1 EXternal Public IP"
               }
         },        
         "OWARecord": {
@@ -70,7 +70,7 @@
         },
         {
         "type": "Microsoft.Network/dnszones/a",
-        "name": "[concat(parameters('ZoneName'), '/', parameters('OCSPRecord'))]",
+        "name": "[concat(parameters('ZoneName'), '/', parameters('Server1Record'))]",
         "apiVersion": "2018-05-01",
         "location": "global",
         "dependsOn": [
@@ -80,7 +80,7 @@
             "TTL": 900,
             "ARecords": [
                 {
-                    "ipv4Address": "[parameters('OCSPPublicIP')]"
+                    "ipv4Address": "[parameters('Server1PublicIP')]"
                 }
                 ]
             }
