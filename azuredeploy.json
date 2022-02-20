@@ -173,10 +173,19 @@
           "description": "Auto-Shutdown notification Email Example:  user@domain.com"
       }
     },  
-      "CertPath":{
-        "type": "string",
-        "defaultValue": "https://www.bozteck.com/wildcard_wingtip_toys.pfx"
-      },                                           
+    "CertURL":{
+      "type": "string",
+      "defaultValue": "https://www.bozteck.com/wildcard_wingtip_toys.pfx",
+      "metadata": {
+        "description": "URL to PFX file.  Must be wildcart (for now)"
+        }
+      },  
+    "CertPassword": {
+      "type": "securestring",
+        "metadata": {
+          "description": "password for PFX file"
+      }
+    },                                       
     "ExchangeOrgName": {
       "type": "string",
       "defaultValue": "wingtip",
@@ -1640,7 +1649,13 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                                                                                                                                                                                                                                      
+              },                                                                                                         
+              "CertURL": {
+                "value": "[parameters('CertURL')]"
+              },
+              "CertPassword": {
+                "value": "[parameters('CertPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                 
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
