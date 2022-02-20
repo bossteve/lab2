@@ -766,12 +766,9 @@
               "ex1IP": {
                 "value": "[variables('ex1IP')]"
               },                                                                                                                          
-              "icaIP": {
-                "value": "[variables('icaIP')]"
-              },                                                                                                                          
-              "ocspIP": {
-                "value": "[variables('ocspIP')]"
-              }, 
+              "Server1IP": {
+                "value": "[variables('Server1IP')]"
+              },
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -1747,7 +1744,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployServer1",
       "dependsOn": [
-        "ConfigureOCSP"
+        "createsites"
       ],      
       "properties": {
           "mode": "Incremental",

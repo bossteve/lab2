@@ -10,8 +10,7 @@
         [String]$ReverseLookup1,
         [String]$ForwardLookup1,
         [String]$dc1lastoctet,
-        [String]$icaIP,
-        [String]$ocspIP,
+        [String]$Server1IP,
         [String]$ex1IP,
         [Int]$RetryIntervalSec=420,
         [System.Management.Automation.PSCredential]$Admincreds
@@ -49,19 +48,11 @@
             DependsOn = "[DnsServerADZone]ReverseADZone1"           
         }
 
-        DnsRecordA crlrecord
-        {
-            Name      = "crl"
-            ZoneName  = "$ExternaldomainName"
-            IPv4Address = "$icaIP"
-            Ensure    = 'Present'
-        }
-
-        DnsRecordA ocsprecord
+        DnsRecordA server1record
         {
             Name      = "ocsp"
             ZoneName  = "$ExternaldomainName"
-            IPv4Address = "$ocspIP"
+            IPv4Address = "$Server1IP"
             Ensure    = 'Present'
         }
 

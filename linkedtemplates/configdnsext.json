@@ -50,18 +50,12 @@
                 "description": "Exchange Server1 IP"
             }
         },                        
-        "icaIP": {
+        "Server1IP": {
             "type": "string",
             "metadata": {
-                "description": "Issuing CA IP"
+                "description": "Server1 IP"
             }
-        },                        
-        "ocspIP": {
-            "type": "string",
-            "metadata": {
-                "description": "OCSP IP"
-            }
-        },                                               
+        },                                            
         "location": {
             "type": "string",
           "metadata": {
@@ -119,8 +113,7 @@
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
                             "ForwardLookup1": "[parameters('ForwardLookup1')]",                            
                             "dc1lastoctet": "[parameters('dc1lastoctet')]",
-                            "icaIP": "[parameters('icaIP')]",                                                        
-                            "ocspIP": "[parameters('ocspIP')]",                                                                                                                              
+                            "Server1IP": "[parameters('Server1IP')]",                                                                                                                             
                             "ex1IP": "[parameters('ex1IP')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
