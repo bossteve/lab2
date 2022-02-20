@@ -37,7 +37,20 @@
           "metadata": {
             "description": "The password for the Administrator account of the new VM and Domain"
           }
-        },   
+        },       
+        "CertURL":{
+            "type": "string",
+            "defaultValue": "https://www.bozteck.com/wildcard_wingtip_toys.pfx",
+        "metadata": {
+            "description": "URL to PFX file.  Must be wildcart (for now)"
+            }
+        },  
+        "CertPassword": {
+        "type": "securestring",
+            "metadata": {
+            "description": "password for PFX file"
+            }
+        },     
         "CertSubjectName": {
             "type": "string",
             "metadata":{
@@ -61,21 +74,7 @@
             "metadata": {
                 "description": "Auto-generated token to access _artifactsLocation"
             }
-        },
-               
-        "CertURL":{
-            "type": "string",
-            "defaultValue": "https://www.bozteck.com/wildcard_wingtip_toys.pfx",
-        "metadata": {
-            "description": "URL to PFX file.  Must be wildcart (for now)"
-            }
-        },  
-        "CertPassword": {
-        "type": "securestring",
-            "metadata": {
-            "description": "password for PFX file"
-        }
-    }             
+        }            
     },
     "variables": {
         "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/EXCHANGE1622.zip', parameters('_artifactsLocationSasToken')))]",
