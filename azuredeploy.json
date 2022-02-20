@@ -172,7 +172,11 @@
       "metadata": {
           "description": "Auto-Shutdown notification Email Example:  user@domain.com"
       }
-    },                                               
+    },  
+      "CertPath":{
+        "type": "string",
+        "defaultValue": "https://www.bozteck.com/wildcard_wingtip_toys.pfx"
+      },                                           
     "ExchangeOrgName": {
       "type": "string",
       "defaultValue": "wingtip",

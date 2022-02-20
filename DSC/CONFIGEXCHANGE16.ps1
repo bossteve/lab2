@@ -33,23 +33,23 @@
             SetScript =
             {
                 # Create Credentials
-                $Load = "$using:DomainCreds"
-                $Password = $DomainCreds.Password
+                #$Load = "$using:DomainCreds"
+                #$Password = $DomainCreds.Password
 
                 # Get Certificate 2016 Certificate
-                $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2016.$using:ExternalDomainName"}
-                IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=owa2016.$using:ExternalDomainName" -DNSName "owa2016.$using:ExternalDomainName","autodiscover.$using:ExternalDomainName","autodiscover2016.$using:ExternalDomainName","outlook2016.$using:ExternalDomainName","eas2016.$using:ExternalDomainName" -CertStoreLocation "cert:\LocalMachine\My"}
+                #$CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=*.$using:ExternalDomainName"}
+                #IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=owa2016.$using:ExternalDomainName" -DNSName "owa2016.$using:ExternalDomainName","autodiscover.$using:ExternalDomainName","autodiscover2016.$using:ExternalDomainName","outlook2016.$using:ExternalDomainName","eas2016.$using:ExternalDomainName" -CertStoreLocation "cert:\LocalMachine\My"}
 
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2016.$using:ExternalDomainName"}).Thumbprint
-                (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Exchange 2016 SAN Cert"
+                #$thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=*.$using:ExternalDomainName"}).Thumbprint
+                #(Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Exchange 2016 SAN Cert"
 
                 # Export Service Communication Certificate
-                $CertFile = Get-ChildItem -Path "C:\Certificates\owa2016.$using:ExternalDomainName.pfx" -ErrorAction 0
-                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\owa2016.$using:ExternalDomainName.pfx" -Password $Password}
+                #$CertFile = Get-ChildItem -Path "C:\Certificates\owa2016.$using:ExternalDomainName.pfx" -ErrorAction 0
+                #IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\owa2016.$using:ExternalDomainName.pfx" -Password $Password}
 
                 # Share Certificate
-                $CertShare = Get-SmbShare -Name Certificates -ErrorAction 0
-                IF ($CertShare -eq $Null) {New-SmbShare -Name Certificates -Path C:\Certificates -FullAccess Administrators}
+                #$CertShare = Get-SmbShare -Name Certificates -ErrorAction 0
+                #IF ($CertShare -eq $Null) {New-SmbShare -Name Certificates -Path C:\Certificates -FullAccess Administrators}
             }
             GetScript =  { @{} }
             TestScript = { $false}
@@ -61,7 +61,7 @@
             SetScript =
             {
                 # Get Certificate 2016 Certificate
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2016.$using:ExternalDomainName"}).Thumbprint
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=*.$using:ExternalDomainName"}).Thumbprint
                 
                 # Connect to Exchange
                 $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$using:computerName.$using:InternalDomainName/PowerShell/"

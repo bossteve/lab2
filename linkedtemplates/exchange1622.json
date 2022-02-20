@@ -55,7 +55,21 @@
             "metadata": {
                 "description": "Auto-generated token to access _artifactsLocation"
             }
-        }                
+        },
+               
+        "CertURL":{
+            "type": "string",
+            "defaultValue": "https://www.bozteck.com/wildcard_wingtip_toys.pfx",
+        "metadata": {
+            "description": "URL to PFX file.  Must be wildcart (for now)"
+            }
+        },  
+        "CertPassword": {
+        "type": "securestring",
+            "metadata": {
+            "description": "password for PFX file"
+        }
+    }             
     },
     "variables": {
         "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/EXCHANGE1622.zip', parameters('_artifactsLocationSasToken')))]",
@@ -78,7 +92,9 @@
                         "Properties": {
                             "NetBiosDomain": "[parameters('NetBiosdomain')]",          
                             "DBName": "[parameters('DBName')]",       
-                            "SetupDC": "[parameters('SetupDC')]",                                                                                                        
+                            "SetupDC": "[parameters('SetupDC')]",   
+                            "CertURL": "[parameters('CertURL')]",
+                            "CertPassword": "PrivateSettingsRef:CertPassword",                                                                                                     
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
@@ -87,7 +103,8 @@
                     },
                     "protectedSettings": {
                         "Items": {
-                            "AdminPassword": "[parameters('adminPassword')]"
+                            "AdminPassword": "[parameters('adminPassword')]",
+                            "CertPassword": "[parameters('CertPassword')]"
                         }
                     }                                        
                 }
