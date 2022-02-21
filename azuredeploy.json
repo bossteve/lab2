@@ -472,7 +472,7 @@
     },                                            
     "WK1VMSize": {
       "type": "string",
-      "defaultValue": "Standard_B1ms",
+      "defaultValue": "Standard_B2s",
       "allowedValues": [
           "Standard_B1ms",
           "Standard_B2s",
