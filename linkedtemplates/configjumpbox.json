@@ -41,7 +41,7 @@
     },
     "variables": {
         "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGJUMPBOX.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CONFIGJUMPBOX.ps1\\CONFIGEJUMPBOX"
+        "ConfigurationFunction": "CONFIGJUMPBOX.ps1\\CONFIGJUMPBOX"
     },
     "resources": [
         {
