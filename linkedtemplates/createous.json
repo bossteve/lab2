@@ -31,7 +31,13 @@
           "metadata": {
             "description": "Region of Resources"
           }
-        }                        
+        },
+        "CertPassword":  {
+            "type": "securestring",
+            "metadata": {
+                "description": "The password for the pfx"
+            }
+        }                     
     },
     "variables": {
         "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CREATEOUS.zip', parameters('_artifactsLocationSasToken')))]",
@@ -52,7 +58,8 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "BaseDN": "[parameters('BaseDN')]"
+                            "BaseDN": "[parameters('BaseDN')]",
+                            "CerPassword": "[parameters('CertPassword')]"
                         }
                 }
             }

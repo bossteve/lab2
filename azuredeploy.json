@@ -838,7 +838,10 @@
               },
               "BaseDN": {
                 "value": "[variables('BaseDN')]"
-              },              
+              },
+              "CertPassword": {
+                "value": "[Parameters('CertPassword')]"
+              } ,           
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            

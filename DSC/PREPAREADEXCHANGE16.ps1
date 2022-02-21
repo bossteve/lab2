@@ -6,7 +6,7 @@
         [String]$NetBiosDomain,
         [String]$DC1Name,
         [String]$BaseDN,
-        [securestring]$CertPassword,
+        [System.Security.SecureString]$CertPassword,
         [String]$CertURL,
         [System.Management.Automation.PSCredential]$Admincreds
     )

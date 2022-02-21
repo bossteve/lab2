@@ -7,7 +7,7 @@
         [String]$DC1Name,
         [String]$BaseDN,
         [securestring]$CertPassword,
-        [String]$CertURL,
+        [System.Security.SecureString]$CertURL,
         [System.Management.Automation.PSCredential]$Admincreds
     )
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
