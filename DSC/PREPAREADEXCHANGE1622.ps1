@@ -41,7 +41,8 @@
             {
                 mkdir s:\cert
                 wget -Uri $CertURL -OutFile "s:\cert\cert.pfx"
-                Import-PfxCertificate -FilePath "s:\cert\cert.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $CertPassword 
+                $pass = ConvertTo-SecureString $CertPassword -AsPlainText -Force
+                Import-PfxCertificate -FilePath "s:\cert\cert.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $pass 
                 
                 # Create Exchange AD Deployment
                 (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
