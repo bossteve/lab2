@@ -1628,13 +1628,7 @@
               },                                                                                                                                                                                                                                                                                                                                 
               "location": {
                   "value": "[resourceGroup().location]"
-              }, 
-              "CertURL": {
-                "value": "[parameters('CertURL')]"
               },
-              "CertPassword": {
-                "value": "[parameters('CertPassword')]"
-              },         
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -1736,16 +1730,7 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                         
-              "CertURL": {
-                "value": "[parameters('CertURL')]"
-              },
-              "CertPassword": {
-                "value": "[parameters('CertPassword')]"
-              },
-              "CertSubjectName":{
-                "value": "[parameters('CertSubjectName')]"
-              },                                                                                                                                                                                                                                                                                                                             
+              },                                                                                                                                                                                                                                                                                                                           
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            

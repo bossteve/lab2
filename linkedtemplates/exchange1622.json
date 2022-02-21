@@ -99,8 +99,7 @@
                             "DBName": "[parameters('DBName')]",       
                             "SetupDC": "[parameters('SetupDC')]",   
                             "CertURL": "[parameters('CertURL')]",
-                            "CertSubjectName": "[parameters('CertSubjectName')]",
-                            "CertPassword": "PrivateSettingsRef:certPassword",                                                                                                     
+                            "CertSubjectName": "[parameters('CertSubjectName')]",                                                                                                   
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
@@ -109,8 +108,7 @@
                     },
                     "protectedSettings": {
                         "Items": {
-                            "AdminPassword": "[parameters('adminPassword')]",
-                            "certPassword": "[parameters('CertPassword')]"
+                            "AdminPassword": "[parameters('adminPassword')]"
                         }
                     }                                        
                 }

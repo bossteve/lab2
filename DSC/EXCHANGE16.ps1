@@ -5,10 +5,6 @@
         [String]$NetBiosDomain,
         [String]$DBName,
         [String]$SetupDC,
-        [string]$CertSubjectName,
-        [String]$CertURL,
-        [string]$CertSubjectName,
-        [securestring]$CertPassword,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
