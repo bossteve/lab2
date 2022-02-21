@@ -1215,7 +1215,9 @@
       "apiVersion": "2019-10-01",
       "name": "configurejumpbox",
       "dependsOn": [
-        "configdns"
+        "DeployWK1VM-11",
+        "DeployWK1VM-10",
+        "DeployWK1VM-7"
       ],            
       "properties": {
           "mode": "Incremental",
