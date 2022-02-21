@@ -6,6 +6,8 @@
         [String]$NetBiosDomain,
         [String]$DC1Name,
         [String]$BaseDN,
+        [securestring]$CertPassword,
+        [String]$CertURL,
         [System.Management.Automation.PSCredential]$Admincreds
     )
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
@@ -37,6 +39,10 @@
         {
             SetScript =
             {
+                mkdir s:\cert
+                wget -Uri $CertURL -OutFile "s:\cert\cert.pfx"
+                Import-PfxCertificate -FilePath "s:\cert\cert.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $CertPassword 
+
                 # Create Exchange AD Deployment
                 (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
 

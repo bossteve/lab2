@@ -50,6 +50,19 @@
             "description": "Region of Resources"
           }
         }, 
+        "CertURL":{
+            "type": "string",
+            "defaultValue": "https://www.bozteck.com/wildcard_wingtip_toys.pfx",
+        "metadata": {
+            "description": "URL to PFX file.  Must be wildcart (for now)"
+            }
+        },  
+        "CertPassword": {
+        "type": "securestring",
+            "metadata": {
+            "description": "password for PFX file"
+            }
+        },
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -85,7 +98,9 @@
                             "ExchangeOrgName": "[parameters('ExchangeOrgName')]",                                                        
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "DC1Name": "[parameters('DC1Name')]",                                                                                    
-                            "BaseDN": "[parameters('BaseDN')]",                                                                                                                                            
+                            "BaseDN": "[parameters('BaseDN')]",    
+                            "CertURL": "[parameters('CertURL')]",
+                            "CertPassword": "PrivateSettingsRef:certPassword",                                                                                                                  
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
@@ -94,7 +109,8 @@
                     },
                     "protectedSettings": {
                         "Items": {
-                            "AdminPassword": "[parameters('adminPassword')]"
+                            "AdminPassword": "[parameters('adminPassword')]",
+                            "certPassword": "[parameters('CertPassword')]"
                         }
                     }                                        
                 }

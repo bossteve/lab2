@@ -57,9 +57,7 @@
             {
                 $Install = Get-ChildItem -Path S:\ExchangeInstall\DeployExchange.cmd -ErrorAction 0
                 IF ($Install -eq $null) {   
-                mkdir s:\cert
-                wget -Uri $CertURL -OutFile "s:\cert\cert.pfx"
-                Import-PfxCertificate -FilePath "s:\cert\cert.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $CertPassword 
+
                 Set-Content -Path S:\ExchangeInstall\DeployExchange.cmd -Value "J:\Setup.exe /IAcceptExchangeServerLicenseTerms_DiagnosticDataOFF /Mode:Install /Role:Mailbox /DbFilePath:M:\$using:DBName\$using:DBName.edb /LogFolderPath:M:\$using:DBName /MdbName:$using:DBName /dc:$using:SetupDC"
                 S:\ExchangeInstall\DeployExchange.cmd
 		}

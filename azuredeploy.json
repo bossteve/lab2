@@ -1551,7 +1551,7 @@
               },                                                                                                                                                                                                                                                                                                                                 
               "location": {
                   "value": "[resourceGroup().location]"
-              },          
+              },        
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -1628,7 +1628,13 @@
               },                                                                                                                                                                                                                                                                                                                                 
               "location": {
                   "value": "[resourceGroup().location]"
-              },          
+              }, 
+              "CertURL": {
+                "value": "[parameters('CertURL')]"
+              },
+              "CertPassword": {
+                "value": "[parameters('CertPassword')]"
+              },         
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -1676,7 +1682,13 @@
               },                                                                                                                                                                                                                                                                                                                                 
               "location": {
                   "value": "[resourceGroup().location]"
-              },          
+              },                                                                        
+              "CertURL": {
+                "value": "[parameters('CertURL')]"
+              },
+              "CertPassword": {
+                "value": "[parameters('CertPassword')]"
+              },
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
