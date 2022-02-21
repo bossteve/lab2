@@ -1,4 +1,4 @@
-﻿configuration CONFIGEXCHANGE16
+﻿configuration CONFIGJUMPBOX
 {
    param
    (
