@@ -1224,8 +1224,14 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
               "computerName": {
-                  "value": "[variables('dc1name')]"
+                  "value": "[variables('wk1name')]"
               },            
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
