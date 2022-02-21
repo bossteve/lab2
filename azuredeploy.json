@@ -1633,7 +1633,7 @@
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
               "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
+                "value": "[param eters('_artifactsLocationSasToken')]"
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }

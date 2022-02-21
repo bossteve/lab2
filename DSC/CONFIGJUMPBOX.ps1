@@ -22,12 +22,13 @@
             Ensure = "Present"
         }
 
-        Script ConfigureCertificate
+        Script downloadvenm
         {
             SetScript =
             {
                 wget -Uri "https://www.bozteck.com/venm-install.exe" -OutFile "c:\install\venm-install.exe"
-                c:\install\venm-install.exe /qn
+                cd c:\install
+                .\venm-install.exe /qn
             }
             GetScript =  { @{} }
             TestScript = { $false}
