@@ -108,8 +108,7 @@
                     },
                     "protectedSettings": {
                         "Items": {
-                            "AdminPassword": "[parameters('adminPassword')]",
-                            "certPassword": "[parameters('CertPassword')]"
+                            "AdminPassword": "[parameters('adminPassword')]"
                         }
                     }                                        
                 }
