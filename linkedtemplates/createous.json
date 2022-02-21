@@ -59,7 +59,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "BaseDN": "[parameters('BaseDN')]",
-                            "CerPassword": "[parameters('CertPassword')]"
+                            "CertPassword": "[parameters('CertPassword')]"
                         }
                 }
             }
