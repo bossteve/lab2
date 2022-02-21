@@ -3,7 +3,7 @@
    param
    (
         [String]$BaseDN,
-        [System.Security.SecureString]$CertPassword
+        [String]$CertPassword
     )
 
     Import-DscResource -Module ActiveDirectoryDsc

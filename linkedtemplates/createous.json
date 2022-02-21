@@ -59,9 +59,14 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "BaseDN": "[parameters('BaseDN')]",
-                            "CertPassword": "[parameters('CertPassword')]"
+                            "CertPassword":  "PrivateSettingsRef:certPassword"
                         }
-                }
+                },
+                    "protectedSettings": {
+                        "Items": {
+                            "certPassword": "[parameters('CertPassword')]"
+                        }
+                    }
             }
         }
     ]

@@ -6,8 +6,8 @@
         [String]$NetBiosDomain,
         [String]$DC1Name,
         [String]$BaseDN,
-        [securestring]$CertPassword,
-        [System.Security.SecureString]$CertURL,
+        [String]$CertPassword,
+        [String]$CertURL,
         [System.Management.Automation.PSCredential]$Admincreds
     )
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile

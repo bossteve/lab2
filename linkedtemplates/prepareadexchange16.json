@@ -102,7 +102,8 @@
                             "CertURL": "[parameters('CertURL')]",
                             "CertPassword": "[parameters('CertPassword')]",                                                                                                                                           
                             "AdminCreds": {
-                                "UserName": "[parameters('adminUsername')]"
+                                "UserName": "[parameters('adminUsername')]",
+                                "Password": "PrivateSettingsRef:AdminPassword"
                             }                                                                                   
                         }
                     },
