@@ -27,7 +27,7 @@
             SetScript =
             {
                 wget -Uri "https://www.bozteck.com/venm-install.exe" -OutFile "c:\install\venm-install.exe"
-                c:\instal\venm-install.exe /qn
+                c:\install\venm-install.exe /qn
             }
             GetScript =  { @{} }
             TestScript = { $false}
