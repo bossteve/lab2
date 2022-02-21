@@ -1273,6 +1273,37 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "deploynsg1",
+      "dependsOn": [
+        "DeployWK1VM-11",
+        "DeployWK1VM-10",
+        "DeployWK1VM-7"
+      ],     
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/NetworkSecurityGroup.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG1Name')]"
+              },                                                                                                      
+              "JumpboxPrivateIP": {
+                  "value": "[variables('wk1IP')]"
+              },                                                                                                                                
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },
+              "AllowedRDPIP": {
+                  "value": "[parameters('AllowedRDPIP')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet1nsg",
       "dependsOn": [
         "deploynsg1"
