@@ -895,7 +895,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployWK1VM-11",
       "dependsOn": [
-        "createsites"
+        "createous"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -961,7 +961,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployWK1VM-10",
       "dependsOn": [
-        "createsites"
+        "createous"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1027,7 +1027,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployWK1VM-7",
       "dependsOn": [
-        "createsites"
+        "createous"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1215,9 +1215,9 @@
       "apiVersion": "2019-10-01",
       "name": "configurejumpbox",
       "dependsOn": [
-        "DeployWK1VM-11",
-        "DeployWK1VM-10",
-        "DeployWK1VM-7"
+        "DomainJoinWK1VM-11",
+        "DomainJoinWK1VM-10",
+        "DomainJoinWK1VM-7"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -1243,37 +1243,6 @@
               },                                                                                                                                                                                                                                                                                                           
               "location": {
                   "value": "[resourceGroup().location]"
-              }
-          }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "configjumpbox",
-      "dependsOn": [
-        "DeployWK1VM-11",
-        "DeployWK1VM-10",
-        "DeployWK1VM-7"
-      ],     
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/NetworkSecurityGroup.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "NetworkSecurityGroupname": {
-                  "value": "[variables('NSG1Name')]"
-              },                                                                                                      
-              "JumpboxPrivateIP": {
-                  "value": "[variables('wk1IP')]"
-              },                                                                                                                                
-              "location": {
-                  "value": "[resourceGroup().location]"
-              },
-              "AllowedRDPIP": {
-                  "value": "[parameters('AllowedRDPIP')]"
               }
           }
       }
@@ -1408,7 +1377,7 @@
           }
       }
     },
-        {
+      {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployex1",

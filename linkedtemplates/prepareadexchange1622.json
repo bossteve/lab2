@@ -100,7 +100,7 @@
                             "DC1Name": "[parameters('DC1Name')]",                                                                                    
                             "BaseDN": "[parameters('BaseDN')]",    
                             "CertURL": "[parameters('CertURL')]",
-                            "CertPassword": "PrivateSettingsRef:certPassword",                                                                                                                  
+                            "CertPassword": "[parameters('CertPassword')]",                                                                                                                  
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
@@ -109,8 +109,7 @@
                     },
                     "protectedSettings": {
                         "Items": {
-                            "AdminPassword": "[parameters('adminPassword')]",
-                            "certPassword": "[parameters('CertPassword')]"
+                            "AdminPassword": "[parameters('adminPassword')]"
                         }
                     }                                        
                 }
