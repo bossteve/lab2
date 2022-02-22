@@ -100,8 +100,8 @@
          DnsRecordA adfsrecord
          {
              Name      = "adfs"
-             Zone      = $ExternalDomainName
-             Target    = $ADFSServer1IP
+             ZoneName      = $ExternalDomainName
+             IPv4Address    = $ADFSServer1IP
              Ensure    = 'Present'
          }
     }

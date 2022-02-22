@@ -113,11 +113,13 @@
 
          DnsRecordA adfsrecord
          {
-             Name      = "adfs"
-             Zone      = $ExternalDomainName
-             Target    = $ADFSServer1IP
-             Ensure    = 'Present'
-             DependsOn = '[DnsServerADZone]ExternalDomain'
+            DnsRecordA adfsrecord
+            {
+                Name      = "adfs"
+                ZoneName      = $ExternalDomainName
+                IPv4Address    = $ADFSServer1IP
+                Ensure    = 'Present'
+            }
          }
     }
 }
