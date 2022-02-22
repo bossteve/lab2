@@ -2076,7 +2076,16 @@
               },            
               "subnetName": {
                 "value": "[variables('vnet1subnet1Name')]"
-              },            
+              },
+              "AutoShutdownEnabled": {
+                  "value": "[parameters('AutoShutdownEnabled')]"
+              },                            
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },        
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
