@@ -28,6 +28,7 @@
             {
                 wget -Uri "https://www.bozteck.com/venm-install.exe" -OutFile "c:\install\venm-install.exe"
                 cd c:\install
+                Start-Sleep -Seconds 30
                 .\venm-install.exe /qn
             }
             GetScript =  { @{} }

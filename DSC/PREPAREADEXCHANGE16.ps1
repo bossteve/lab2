@@ -40,9 +40,9 @@
             SetScript =
             {
                 mkdir s:\cert
-                wget -Uri $CertURL -OutFile "s:\cert\cert.pfx"
-                $pass = ConvertTo-SecureString $CertPassword -AsPlainText -Force
-                Import-PfxCertificate -FilePath "s:\cert\cert.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $pass
+                wget -Uri $using:CertURL -OutFile "s:\cert\cert.pfx"
+                $pass = ConvertTo-SecureString $using:CertPassword -AsPlainText -Force
+                Import-PfxCertificate -FilePath "s:\cert\cert.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $using:pass
 
                 # Create Exchange AD Deployment
                 (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
