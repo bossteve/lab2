@@ -97,9 +97,7 @@
                         "Properties": {
                             "NetBiosDomain": "[parameters('NetBiosdomain')]",          
                             "DBName": "[parameters('DBName')]",       
-                            "SetupDC": "[parameters('SetupDC')]", 
-                            "CertURL": "[parameters('CertURL')]",
-                            "CertSubjectName": "[parameters('CertSubjectName')]",                                                                                                     
+                            "SetupDC": "[parameters('SetupDC')]",                                                                                                  
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
