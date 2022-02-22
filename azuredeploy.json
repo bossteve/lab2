@@ -2039,7 +2039,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployADFS1VM",   
-      "dependsOn": ["deployDC1VM"],
+      "dependsOn": [
+        "createsites"
+      ],
       "properties": {
           "mode": "Incremental",
           "templateLink": {
