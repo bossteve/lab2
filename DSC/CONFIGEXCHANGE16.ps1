@@ -29,34 +29,6 @@
             Ensure = "Present"
         }
 
-        Script ConfigureCertificate
-        {
-            SetScript =
-            {
-                # Create Credentials
-                #$Load = "$using:DomainCreds"
-                #$Password = $DomainCreds.Password
-
-                # Get Certificate 2016 Certificate
-                #$CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=$using:CertSubjectName"}
-                #IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=owa2016.$using:ExternalDomainName" -DNSName "owa2016.$using:ExternalDomainName","autodiscover.$using:ExternalDomainName","autodiscover2016.$using:ExternalDomainName","outlook2016.$using:ExternalDomainName","eas2016.$using:ExternalDomainName" -CertStoreLocation "cert:\LocalMachine\My"}
-
-                #$thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=*.$using:ExternalDomainName"}).Thumbprint
-                #(Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Exchange 2016 SAN Cert"
-
-                # Export Service Communication Certificate
-                #$CertFile = Get-ChildItem -Path "C:\Certificates\owa2016.$using:ExternalDomainName.pfx" -ErrorAction 0
-                #IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\owa2016.$using:ExternalDomainName.pfx" -Password $Password}
-
-                # Share Certificate
-                #$CertShare = Get-SmbShare -Name Certificates -ErrorAction 0
-                #IF ($CertShare -eq $Null) {New-SmbShare -Name Certificates -Path C:\Certificates -FullAccess Administrators}
-            }
-            GetScript =  { @{} }
-            TestScript = { $false}
-            DependsOn = '[File]Certificates'
-        }
-
         Script ConfigureExchange2016
         {
             SetScript =
@@ -94,14 +66,6 @@
                 # Enable Exchange 2016 Certificate
                 Enable-ExchangeCertificate -Thumbprint $thumbprint -Services IIS -Confirm:$False
 
-                # Create Connectors
-                $LocalRelayRecieveConnector = Get-ReceiveConnector "LocalRelay $using:computerName" -DomainController "$using:ConfigDC" -ErrorAction 0
-                IF ($LocalRelayRecieveConnector -eq $Null) {
-                #New-ReceiveConnector "LocalRelay $using:computerName" -Custom -Bindings 0.0.0.0:25 -RemoteIpRanges "$using:CAServerIP" -DomainController "$using:ConfigDC" -TransportRole FrontendTransport
-                Get-ReceiveConnector "LocalRelay $using:computerName" -DomainController "$using:ConfigDC" | Add-ADPermission -User "NT AUTHORITY\ANONYMOUS LOGON" -ExtendedRights "Ms-Exch-SMTP-Accept-Any-Recipient" -ErrorAction 0
-                Set-ReceiveConnector "LocalRelay $using:computerName" -AuthMechanism ExternalAuthoritative -PermissionGroups ExchangeServer
-                }
-
                 $InternetSendConnector = Get-SendConnector "$using:Site Internet" -ErrorAction 0
                 IF ($InternetSendConnector -eq $Null) {
                 New-SendConnector "$using:Site Internet" -AddressSpaces * -SourceTransportServers "$using:computerName"
@@ -125,7 +89,7 @@
             GetScript =  { @{} }
             TestScript = { $false}
             PsDscRunAsCredential = $DomainCreds
-            DependsOn = '[Script]ConfigureCertificate'
+            DependsOn = '[File]Certificates'
         }
 
         Script ConfigureExchangeSecurityandPerformance
