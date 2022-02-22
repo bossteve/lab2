@@ -73,6 +73,12 @@
           "metadata": {
             "description": "The password for the Administrator account of the new VM and Domain"
           }
+        }, 
+        "ADFSServer1IP": {
+            "type": "string",
+            "metadata": {
+                "description": "ADFS IP"
+            }
         },           
         "_artifactsLocation": {
             "type": "string",
@@ -113,7 +119,8 @@
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
                             "ForwardLookup1": "[parameters('ForwardLookup1')]",                            
                             "dc1lastoctet": "[parameters('dc1lastoctet')]",
-                            "Server1IP": "[parameters('Server1IP')]",                                                                                                                            
+                            "Server1IP": "[parameters('Server1IP')]",  
+                            "ADFSServer1IP": "[parameters('ADFSServer1IP')]",                                                                                                                          
                             "ex1IP": "[parameters('ex1IP')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
