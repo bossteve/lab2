@@ -49,6 +49,12 @@
             "metadata": {
                 "description": "Exchange Server1 IP"
             }
+        }, 
+        "ADFSServer1IP": {
+            "type": "string",
+            "metadata": {
+                "description": "ADFS IP"
+            }
         },                        
         "Server1IP": {
             "type": "string",
@@ -114,7 +120,8 @@
                             "ForwardLookup1": "[parameters('ForwardLookup1')]",                            
                             "dc1lastoctet": "[parameters('dc1lastoctet')]",
                             "Server1IP": "[parameters('Server1IP')]",                                                                                                                             
-                            "ex1IP": "[parameters('ex1IP')]",                            
+                            "ex1IP": "[parameters('ex1IP')]",  
+                            "ADFSServer1IP": "[parameters('ADFSServer1IP')]",                          
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"

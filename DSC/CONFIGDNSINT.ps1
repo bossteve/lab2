@@ -97,12 +97,11 @@
             Ensure    = 'Present'
          }
 
-         xDnsRecord adfsrecord
+         DnsRecordA adfsrecord
          {
              Name      = "adfs"
              Zone      = $ExternalDomainName
              Target    = $ADFSServer1IP
-             Type      = 'ARecord'
              Ensure    = 'Present'
          }
     }
