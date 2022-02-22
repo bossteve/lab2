@@ -12,6 +12,7 @@
         [String]$dc1lastoctet,
         [String]$Server1IP,
         [String]$ex1IP,
+        [String]$ADFSServer1IP,
         [Int]$RetryIntervalSec=420,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -94,6 +95,15 @@
             ZoneName  = "$ExternaldomainName"
             IPv4Address = "$ex1IP"
             Ensure    = 'Present'
+         }
+
+         xDnsRecord adfsrecord
+         {
+             Name      = "adfs"
+             Zone      = $ExternalDomainName
+             Target    = $ADFSServer1IP
+             Type      = 'ARecord'
+             Ensure    = 'Present'
          }
     }
 }

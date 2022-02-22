@@ -489,7 +489,26 @@
       "metadata": {
           "description": "IP Address for remote access"
       }
-    },         
+    }, 
+    "ADFSOSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "metadata": {
+            "description": "ADFS OS Version"
+        }
+    },       
+    "ADFS1VMSize": {
+      "type": "string",
+      "defaultValue": "Standard_B2s",
+      "allowedValues": [
+          "Standard_B1ms",
+          "Standard_B2s",
+          "Standard_D2s_v3"
+        ],
+      "metadata": {
+          "description": "ADFS 1 VMSize"
+      }
+    },        
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -539,7 +558,11 @@
     "SRV16OUPath": "[concat('OU=Servers2016,OU=Servers,',variables('BaseDN'))]",        
     "DB1Name": "[concat(parameters('NamingConvention'),'-16-db01')]",
     "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
-    "FromEmail": "[concat(parameters('adminUserName'),'@',variables('InternaldomainName'))]"            
+    "FromEmail": "[concat(parameters('adminUserName'),'@',variables('InternaldomainName'))]",
+    "adfs1name": "[concat(parameters('NamingConvention'),'-adfs-01')]",           
+    "adfs1IP": "[concat(parameters('vnet1ID'),'.1.',variables('adfs1lastoctet'))]",  
+    "adfs1lastoctet": "121",
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"
   },  
   "resources": [
     {
@@ -807,7 +830,10 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                   
+              },                               
+              "ADFSServer1IP": {
+                "value": "[variables('adfs1IP')]"
+              },                  
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -2008,6 +2034,146 @@
               }
           }
       }
-    }                                                                                                                                                                                                                                                                                                                                                                                                                             
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deployADFS1VM",   
+      "dependsOn": ["deployDC1VM"],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adfs1name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('adfs1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('ADFSOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('ADFS1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DomainJoinADFS1",
+      "dependsOn": [
+        "deployADFS1VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adfs1name')]"
+              },
+              "domainName": {
+                  "value": "[variables('InternalDomainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('SRVOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "configurefirstadfs",
+      "dependsOn": [
+        "createFSGMSA",
+        "DomainJoinADFS1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/firstadfs.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adfs1name')]"
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },              
+              "DomainName": {
+                  "value": "[variables('ExternalDomainName')]"
+              },          
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },              
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },                            
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                           
   ]
 }

@@ -91,29 +91,4 @@
             PsDscRunAsCredential = $DomainCreds
             DependsOn = '[File]Certificates'
         }
-
-        Script ConfigureExchangeSecurityandPerformance
-        {
-            SetScript =
-            {
-                # Set PageFile to Manual
-                $pagefileset = Get-WmiObject Win32_pagefilesetting
-                $pagefileset.InitialSize = 8192
-                $pagefileset.MaximumSize = 32778
-                $pagefileset.Put() | Out-Null
-            
-                # Disable SMB1
-                Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol
-                Set-SmbServerConfiguration -EnableSMB1Protocol $false -Force
-
-                # Set TCP Keep Alive
-                $tcpkeepalive = get-itemproperty -Path "HKLM:\System\CurrentControlSet\Services\Tcpip\Parameters" -Name "KeepAliveTime" -ErrorAction 0
-                IF ($tcpkeepalive -eq $null) {New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\Tcpip\Parameters\" -Name "KeepAliveTime" -Value 1800000}
-            }
-            GetScript =  { @{} }
-            TestScript = { $false}
-            PsDscRunAsCredential = $DomainCreds
-            DependsOn = '[Script]ConfigureExchange2016'
-        }
-    }
 }
