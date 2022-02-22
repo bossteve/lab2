@@ -459,7 +459,7 @@
     },                                            
     "EX1VMSize": {
         "type": "string",
-        "defaultValue": "Standard_D2s_v3",
+        "defaultValue": "Standard_D8s_v3",
         "allowedValues": [
           "Standard_B1ms",
           "Standard_B2s",
