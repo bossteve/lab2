@@ -10,6 +10,7 @@
         [String]$CertPassword,
         [String]$CertURL
     )
+    
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
     Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
 
