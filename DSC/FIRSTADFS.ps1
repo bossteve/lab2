@@ -114,10 +114,10 @@
                 Get-ChildItem $dest1 -exclude "Temp" | Move-Item -Destination $dest2
 
                 # Check if Token Signing Certificate Exists
-                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:DomainName"}).Thumbprint
+                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=$using:CertSubjectName"}).Thumbprint
 
                 # Get Token Signing Certificate
-                IF ($signthumbprint -eq $null) {Get-Certificate -Template WebServer -SubjectName "CN=adfs-signing.$using:DomainName" -DNSName "adfs-signing.$using:DomainName" -CertStoreLocation "cert:\LocalMachine\My"}
+                # IF ($signthumbprint -eq $null) {Get-Certificate -Template WebServer -SubjectName "CN=adfs-signing.$using:DomainName" -DNSName "adfs-signing.$using:DomainName" -CertStoreLocation "cert:\LocalMachine\My"}
 
                 # Grant FsGmsa Full Access to Signing Certificate Private Keys
                 Start-Sleep -s 60
@@ -135,10 +135,10 @@
                 Remove-Item $dest2 -Force -ErrorAction 0
 
                 # Check if Token Signing Certificate Exists
-                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:DomainName"}).Thumbprint
+                # $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=$using:CertSubjectName"}).Thumbprint
 
                 # Export Token Signing Certificate
-                Get-ChildItem -Path cert:\LocalMachine\my\$signthumbprint | Export-PfxCertificate -FilePath "C:\Certificates\adfs-signing.$using:DomainName.pfx" -Password $Password
+                #Get-ChildItem -Path cert:\LocalMachine\my\$signthumbprint | Export-PfxCertificate -FilePath "C:\Certificates\adfs-signing.$using:DomainName.pfx" -Password $Password
             }
             GetScript =  { @{} }
             TestScript = { $false}
@@ -163,10 +163,10 @@
                 Add-Content -Path C:\MachineConfig\IssuanceTransformRules.txt -Value '=> issue(store = "Active Directory", types = ("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn"), query = ";userPrincipalName;{0}", param = c.Value);'
 
                 # Get Service Communication Certificate
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs.$using:DomainName"}).Thumbprint
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=$using:CertSubjectName"}).Thumbprint
 
                 # Get Token Signing Certificate
-                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:DomainName"}).Thumbprint
+                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=$using:CertSubjectName"}).Thumbprint
 
                 Import-Module ADFS
                 Install-AdfsFarm -CertificateThumbprint $thumbprint -FederationServiceName "adfs.$using:DomainName" -GroupServiceAccountIdentifier "$using:NetBiosDomain\FsGmsa$"
@@ -176,8 +176,8 @@
                 [string]$IssuanceTransformRules=Get-Content -Path C:\MachineConfig\IssuanceTransformRules.txt
 
                 # Create Relying Party Trusts
-                Add-ADFSRelyingPartyTrust -Name 'Outlook Web App 2019' -Enabled $true -Notes "This is a trust for https://owa2019.$using:DomainName/owa" -WSFedEndpoint "https://owa2019.$using:DomainName/owa" -Identifier "https://owa2019.$using:DomainName/owa" -IssuanceTransformRules $IssuanceTransformRules -IssuanceAuthorizationRules $IssuanceAuthorizationRules
-                Add-ADFSRelyingPartyTrust -Name 'Exchange Admin Center (EAC) 2019' -Enabled $true -Notes "This is a trust for https://owa2019.$using:DomainName/ecp" -WSFedEndpoint "https://owa2019.$using:DomainName/ecp" -Identifier "https://owa2019.$using:DomainName/ecp" -IssuanceTransformRules $IssuanceTransformRules -IssuanceAuthorizationRules $IssuanceAuthorizationRules
+                #Add-ADFSRelyingPartyTrust -Name 'Outlook Web App 2019' -Enabled $true -Notes "This is a trust for https://owa2019.$using:DomainName/owa" -WSFedEndpoint "https://owa2019.$using:DomainName/owa" -Identifier "https://owa2019.$using:DomainName/owa" -IssuanceTransformRules $IssuanceTransformRules -IssuanceAuthorizationRules $IssuanceAuthorizationRules
+                #Add-ADFSRelyingPartyTrust -Name 'Exchange Admin Center (EAC) 2019' -Enabled $true -Notes "This is a trust for https://owa2019.$using:DomainName/ecp" -WSFedEndpoint "https://owa2019.$using:DomainName/ecp" -Identifier "https://owa2019.$using:DomainName/ecp" -IssuanceTransformRules $IssuanceTransformRules -IssuanceAuthorizationRules $IssuanceAuthorizationRules
 
                 # Turn off Certificate Auto Certificate Rollover
                 Set-ADFSProperties -AutoCertificateRollover $False
