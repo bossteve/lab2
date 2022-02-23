@@ -7,9 +7,10 @@
         [String]$DomainName,
         [String]$IssuingCAName,
         [String]$RootCAName,
-        [System.Management.Automation.PSCredential]$Admincreds
-
-
+        [System.Management.Automation.PSCredential]$Admincreds,
+        [string]$CertSubjectName,
+        [String]$CertPassword,
+        [String]$CertURL
     )
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
     Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
@@ -61,6 +62,12 @@
                 $Load = "$using:DomainCreds"
                 $Password = $DomainCreds.Password
                 $fsgmsa = 'FsGmsa$'
+                
+                mkdir c:\cert
+                wget -Uri $using:CertURL -OutFile "c:\cert\cert.pfx"
+                $pass = ConvertTo-SecureString $using:CertPassword -AsPlainText -Force
+                Import-PfxCertificate -FilePath "c:\cert\cert.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $using:pass 
+                
 
                 # Move Crypto Keys
                 $dest1 = "C:\ProgramData\Microsoft\Crypto\RSA\MachineKeys"
@@ -69,13 +76,13 @@
                 Get-ChildItem $dest1 -exclude "Temp" | Move-Item -Destination $dest2
 
                 # Check if Service Communication Certificate Exists
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs.$using:DomainName"}).Thumbprint
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=$using:CertSubjectName"}).Thumbprint
 
                 # Get Service Communication Certificate
                 IF ($thumbprint -eq $null) {Get-Certificate -Template WebServer1 -SubjectName "CN=adfs.$using:DomainName" -DNSName "adfs.$using:DomainName" -CertStoreLocation "cert:\LocalMachine\My"}
 
                 # Get Service Communication Certificate
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs.$using:DomainName"}).Thumbprint
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=$using:CertSubjectName"}).Thumbprint
 
                 # Grant FsGmsa Full Access to Service Communication Certificate Private Keys
                 Start-Sleep -s 60
@@ -110,7 +117,7 @@
                 $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:DomainName"}).Thumbprint
 
                 # Get Token Signing Certificate
-                IF ($signthumbprint -eq $null) {Get-Certificate -Template WebServer1 -SubjectName "CN=adfs-signing.$using:DomainName" -DNSName "adfs-signing.$using:DomainName" -CertStoreLocation "cert:\LocalMachine\My"}
+                IF ($signthumbprint -eq $null) {Get-Certificate -Template WebServer -SubjectName "CN=adfs-signing.$using:DomainName" -DNSName "adfs-signing.$using:DomainName" -CertStoreLocation "cert:\LocalMachine\My"}
 
                 # Grant FsGmsa Full Access to Signing Certificate Private Keys
                 Start-Sleep -s 60

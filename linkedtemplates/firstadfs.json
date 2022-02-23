@@ -56,6 +56,27 @@
             "description": "Region of Resources"
           }
         }, 
+         
+        "CertURL":{
+            "type": "string",
+            "defaultValue": "https://www.bozteck.com/wildcard_wingtip_toys.pfx",
+        "metadata": {
+            "description": "URL to PFX file.  Must be wildcart (for now)"
+            }
+        },  
+        "CertPassword": {
+        "type": "securestring",
+            "metadata": {
+            "description": "password for PFX file"
+            }
+        }, 
+        "CertSubjectName": {
+        "type": "string",
+        "defaultValue": "*.wingtip.toys",
+        "metadata":{
+            "description": "The exact subject name for your cert pfx"
+        }
+        }, 
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -92,7 +113,10 @@
                             "DomainName": "[parameters('domainName')]",
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",  
                             "IssuingCAName": "[parameters('IssuingCAName')]",
-                            "RootCAName": "[parameters('RootCAName')]",                                                                                  
+                            "RootCAName": "[parameters('RootCAName')]",
+                            "CertURL": "[parameters('CertURL')]",
+                            "CertPassword": "[parameters('CertPassword')]",
+                                                                                                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"

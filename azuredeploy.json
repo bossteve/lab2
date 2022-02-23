@@ -2179,7 +2179,16 @@
               },
               "location": {
                   "value": "[resourceGroup().location]"
-              },                            
+              },     
+              "CertSubjectName":{
+                "value": "[parameters('CertSubjectName')]"
+              },                                                                       
+              "CertURL": {
+                "value": "[parameters('CertURL')]"
+              },
+              "CertPassword": {
+                "value": "[parameters('CertPassword')]"
+              },                  
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
