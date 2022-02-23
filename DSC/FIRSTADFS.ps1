@@ -63,9 +63,6 @@
                 $pass = ConvertTo-SecureString $using:CertPassword -AsPlainText -Force
                 Import-PfxCertificate -FilePath "c:\cert\cert.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $using:pass 
         
-                # Move Crypto Keys
-                Get-ChildItem $dest2 | Move-Item -Destination $dest1
-                Remove-Item $dest2 -Force -ErrorAction 0
             }
             GetScript =  { @{} }
             TestScript = { $false}
