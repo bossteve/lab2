@@ -5,8 +5,6 @@
         [String]$TimeZone,        
         [String]$NetBiosDomain,
         [String]$DomainName,
-        [String]$IssuingCAName,
-        [String]$RootCAName,
         [System.Management.Automation.PSCredential]$Admincreds,
         [string]$CertSubjectName,
         [String]$CertPassword,
@@ -36,17 +34,10 @@
             TimeZone         = $TimeZone
         }
 
-        File MachineConfig
-        {
-            Type = 'Directory'
-            DestinationPath = 'C:\MachineConfig'
-            Ensure = "Present"
-        }
-
         File Certificates
         {
             Type = 'Directory'
-            DestinationPath = 'C:\Certificates'
+            DestinationPath = 'C:\cert'
             Ensure = "Present"
             DependsOn = '[File]MachineConfig'
         }
@@ -55,14 +46,10 @@
         {
             SetScript =
             {
-                # Update GPO's
-                gpupdate /force
-                
-                mkdir c:\cert
                 wget -Uri $using:CertURL -OutFile "c:\cert\cert.pfx"
                 $pass = ConvertTo-SecureString $using:CertPassword -AsPlainText -Force
                 Import-PfxCertificate -FilePath "c:\cert\cert.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $using:pass 
-        
+                start-sleep 10
             }
             GetScript =  { @{} }
             TestScript = { $false}
@@ -73,14 +60,15 @@
         {
             SetScript =
             {
-               
+                Import-Module ADFS
+
                 # Get Service Communication Certificate
                 $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=$using:CertSubjectName"}).Thumbprint
 
                 # Get Token Signing Certificate
                 $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=$using:CertSubjectName"}).Thumbprint
 
-                Import-Module ADFS
+                
                 Install-AdfsFarm -CertificateThumbprint $thumbprint -FederationServiceName "adfs.$using:DomainName" -GroupServiceAccountIdentifier "$using:NetBiosDomain\FsGmsa$"
                 
                 Set-ADFSProperties -AutoCertificateRollover $False

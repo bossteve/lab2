@@ -59,9 +59,9 @@
          
         "CertURL":{
             "type": "string",
-            "defaultValue": "https://www.bozteck.com/wildcard_wingtip_toys.pfx",
-        "metadata": {
-            "description": "URL to PFX file.  Must be wildcart (for now)"
+                "defaultValue": "https://www.bozteck.com/wildcard_wingtip_toys.pfx",
+            "metadata": {
+                "description": "URL to PFX file.  Must be wildcart (for now)"
             }
         },  
         "CertPassword": {
@@ -111,12 +111,10 @@
                         "Properties": {
                             "TimeZone": "[parameters('TimeZone')]",
                             "DomainName": "[parameters('domainName')]",
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",  
-                            "IssuingCAName": "[parameters('IssuingCAName')]",
-                            "RootCAName": "[parameters('RootCAName')]",
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",
                             "CertURL": "[parameters('CertURL')]",
                             "CertPassword": "[parameters('CertPassword')]",
-                                                                                                            
+                            "CertSubjectName": "[parameters('CertSubjectName')]",                                                                 
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
