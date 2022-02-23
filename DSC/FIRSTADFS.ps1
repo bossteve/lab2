@@ -39,7 +39,6 @@
             Type = 'Directory'
             DestinationPath = 'C:\cert'
             Ensure = "Present"
-            DependsOn = '[File]MachineConfig'
         }
 
         Script GetADFSCertificates
