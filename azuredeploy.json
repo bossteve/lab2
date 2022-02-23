@@ -2203,7 +2203,7 @@
       "apiVersion": "2019-10-01",
       "name": "createFSGMSA",
       "dependsOn": [
-        "createsites"
+        "configurerootca"
       ],           
       "properties": {
           "mode": "Incremental",
