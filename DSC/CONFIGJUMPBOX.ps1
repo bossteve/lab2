@@ -6,6 +6,8 @@
         [String]$ComputerName
     )
 
+    Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
+
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
 
     Node localhost
@@ -15,25 +17,30 @@
             RebootNodeIfNeeded = $true
         }
 
-        File Install
+        File InstallDir
         {
             Type = 'Directory'
             DestinationPath = 'C:\install'
             Ensure = "Present"
         }
 
-        Script downloadvenm
+        xRemoteFile downloadvenm
+        {
+            DestinationPath = "c:\install\venm-install.exe"
+            Uri             = "https://www.bozteck.com/venm-install.exe"
+            UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
+            DependsOn = '[File]InstallDir'
+        }
+
+        Script installvenm
         {
             SetScript =
             {
-                wget -Uri "https://www.bozteck.com/venm-install.exe" -OutFile "c:\install\venm-install.exe"
-                cd c:\install
-                Start-Sleep -Seconds 30
-                .\venm-install.exe /qn
+                c:\install\venm-install.exe /qn
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            DependsOn = '[File]Install'
+            DependsOn = '[xRemoteFile]downloadvenm'
         }
     }
 }
