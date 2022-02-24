@@ -508,7 +508,15 @@
       "metadata": {
           "description": "ADFS 1 VMSize"
       }
-    },        
+    },    
+             
+    "AzureADConnectDownloadUrl": {
+        "type": "string",
+        "defaultValue": "https://download.microsoft.com/download/B/0/0/B00291D0-5A83-4DE7-86F5-980BC00DE05A/AzureADConnect.msi",
+        "metadata": {
+            "description": "Azure AD Connect Download URL"
+        }
+    },    
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -2232,6 +2240,49 @@
               }                                                                                                                                                                                                                                                                                                           
           }
       }
-    }                                                                                                                                                                                                                                                                                                                                                                                                                      
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "downloadaaddc",
+      "dependsOn": [
+          "DomainJoinServer1-22",
+          "DomainJoinServer1-19",
+          "DomainJoinServer1-16"
+        ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/downloadaaddc.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('Server1name')]"
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                
+              "AzureADConnectDownloadUrl": {
+                  "value": "[parameters('AzureADConnectDownloadUrl')]"
+              },                            
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },                                          
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                     
   ]
 }
