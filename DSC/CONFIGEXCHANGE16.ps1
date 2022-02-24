@@ -91,4 +91,5 @@
             PsDscRunAsCredential = $DomainCreds
             DependsOn = '[File]Certificates'
         }
+    }
 }
