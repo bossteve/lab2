@@ -27,3 +27,5 @@ Be sure to enter your public IP address in the allowedRDPIP field so that you ar
 
 ### Under Construction
 This template is currently under construction.  Some pieces may not work properly for you and some may.  Everything is provided as-is.  I am actively building this so things will break from time to time.
+
+Password: 1234!
