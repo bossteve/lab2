@@ -27,7 +27,7 @@
         xRemoteFile downloadvenm
         {
             DestinationPath = "c:\install\venm-install.exe"
-            Uri             = "https://www.bozteck.com/venm-install.exe"
+            Uri             = "https://bostedorshares.blob.core.windows.net/shared/venm-install.exe"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn = '[File]InstallDir'
         }
