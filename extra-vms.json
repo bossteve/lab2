@@ -1,0 +1,739 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "location": {
+        "type": "String",
+        "defaultValue": "eastus"
+      },
+  
+  
+      "PrefixName": {
+        "type": "String",
+        "defaultValue": "wtt"
+      },
+      
+      "domainJoinUserName": {
+        "type": "string",
+        "defaultValue": "azureadmin@democontoso.net",
+        "metadata": {
+          "description": "Domain NetBiosName plus User name of a domain user with sufficient rights to perform domain join operation. E.g. domain\\username"
+        }
+        
+      },
+      "domainJoinUserPassword": {
+        "type": "securestring",
+        "defaultValue": "",
+        "metadata": {
+          "description": "Domain user password"
+        }
+      },
+      "domainFQDN": {
+        "type": "string",
+        "defaultValue": "democontoso.net",
+        "metadata": {
+          "description": "Domain FQDN where the virtual machine will be joined"
+        }
+      },
+      ////////////////// Windows 2019 Interfaces ////////////////////////////
+      "2019Interface01Name": {
+        "type": "String",
+        "defaultValue": "2019Interface01"
+      },
+      "2019Interface02Name": {
+        "type": "String",
+        "defaultValue": "2019Interface02"
+      },
+      "2019Interface03Name": {
+        "type": "String",
+        "defaultValue": "2019Interface03"
+      },
+      ////////////////// Windows 2016 Interfaces ////////////////////////////
+      "2016Interface01Name": {
+        "type": "String",
+        "defaultValue": "2016Interface01"
+      },
+      "2016Interface02Name": {
+        "type": "String",
+        "defaultValue": "2016Interface02"
+      },
+      "2016Interface03Name": {
+        "type": "String",
+        "defaultValue": "2016Interface03"
+      },
+      ///////////////// Windows 2012 Interfaces //////////////////////////////
+      "2012Interface01Name": {
+        "type": "String",
+        "defaultValue": "2012Interface01"
+      },
+      "2012Interface02Name": {
+        "type": "String",
+        "defaultValue": "2012Interface02"
+      },
+      ///////////////// Windows 10 Interfaces //////////////////////////////
+      "Win10Interface01Name": {
+        "type": "String",
+        "defaultValue": "Win10Interface01"
+      },
+      "Win10Interface02Name": {
+        "type": "String",
+        "defaultValue": "Win10Interface02"
+      },
+      "Win10Interface03Name": {
+        "type": "String",
+        "defaultValue": "Win10Interface03"
+      },
+      ///////////////// Windows 11 Interfaces //////////////////////////////
+      "Win11Interface01Name": {
+        "type": "String",
+        "defaultValue": "Win11Interface01"
+      },
+      "Win11Interface02Name": {
+        "type": "String",
+        "defaultValue": "Win11Interface02"
+      },
+      "Win11Interface03Name": {
+        "type": "String",
+        "defaultValue": "Win11Interface03"
+      },
+      ///////////////// Windows 2008 Interfaces //////////////////////////////
+      "2008Interface01Name": {
+        "type": "String",
+        "defaultValue": "2008Interface01"
+      },
+      ///////////////// Windows 2022 Interfaces //////////////////////////////
+      "2022Interface01Name": {
+        "type": "String",
+        "defaultValue": "2022Interface01"
+      },
+      ///////////////// Ubuntu Interfaces //////////////////////////////
+      "UbuntuInterface01Name": {
+        "type": "String",
+        "defaultValue": "UbuntuInterface01"
+      },
+  
+  
+  
+  
+  
+      ////////////////// Windows 2019 System Name ////////////////////////////        
+      "2019virtualMachine01Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-2019-VM1' )]"
+      },
+      "2019virtualMachine02Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-2019-VM2' )]"
+      },
+      "2019virtualMachine03Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-2019-SQL' )]"
+      },
+      ////////////////// Windows 2016 System Name ////////////////////////////
+      "2016virtualMachine01Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-2016-ADCON' )]"
+      },
+      "2016virtualMachine02Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-2016-VM2' )]"
+      },
+      "2016virtualMachine03Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-2016-VM3' )]"
+      },
+      ////////////////// Windows 2012 System Name ////////////////////////////
+      "2012virtualMachine01Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-2012-WSUS' )]"
+      },
+      "2012virtualMachine02Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-2012-VM2' )]"
+      },
+      ////////////////// Windows 10 System Name ////////////////////////////
+      "Win10virtualMachine01Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-Win10-ADM' )]"
+      },
+      "Win10virtualMachine02Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-Win10-VM2' )]"
+      },
+      "Win10virtualMachine03Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-NoJoin' )]"
+      },
+      ////////////////// Windows 11 System Name ////////////////////////////
+      "Win11virtualMachine01Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-Win11-VM1' )]"
+      },
+      "Win11virtualMachine02Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-Win11-VM2' )]"
+      },
+      "Win11virtualMachine03Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-Win11-VM3' )]"
+      },
+  
+      ////////////////// Windows 2008 System Name ////////////////////////////
+      "2008virtualMachine01Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-2008-SQL' )]"
+      },
+      ////////////////// Windows 2022 System Name ////////////////////////////
+      "2022virtualMachine01Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-2022-VM1' )]"
+      },
+      ////////////////// Ubuntu System Name ////////////////////////////
+      "UbuntuvirtualMachine01Name": {
+        "type": "String",
+        "defaultValue": "[concat(parameters('PrefixName'), '-Ubunti-Proxy' )]"
+      },
+  
+  
+  
+  
+  
+  
+  
+  
+      ////////////////// Win 10 Admin VM Public IP Address ///////////////
+      "publicIpAddressName": {
+        "type": "string",
+        "defaultValue": "Win10-Admin-PubIP"
+      },
+      ////////////////// Ubuntu VM Public IP Address ///////////////
+      "UbuntuIpAddressName": {
+        "type": "string",
+        "defaultValue": "Ubuntu-PubIP"
+      },
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      "virtualMachineSize": {
+        "type": "String"
+      },
+      "adminUsername": {
+        "type": "String"
+      },
+      "adminPassword": {
+        "type": "SecureString"
+      }
+  
+  
+  
+  
+      /////////////////////// Varialbles //////////////////////////
+    },
+    "variables": {
+      "virtualNetworkName": "[concat(parameters('PrefixName'), 'VNet1' )]",
+      "subnet1Name":  "[concat(variables('virtualNetworkName'), '-Subnet1' )]",
+      "subnet1Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('virtualNetworkName'),variables('subnet1Name'))]",
+      "publicIpAddressName": "Win10-Admin-PubIP",
+      "UbuntuIpAddressName": "Ubuntu-PubIP",
+      "CERTInstall": "CertDeploy",
+      "domainJoinOptions": 3
+    },
+  
+  
+  
+    ////////////// NIC CREATION ////////////////////////////
+  
+    ///////////////// Windows 2019 NIC CREATION /////////////////
+    "resources": [
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('2019Interface01Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('2019Interface02Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+         "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('2019Interface03Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+  
+  
+      { ///////////////// Windows 2016 NIC CREATION /////////////////
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('2016Interface01Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+         "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('2016Interface02Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('2016Interface03Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+  
+  
+  
+      ///////////////// Windows 2012 NIC CREATION /////////////////
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('2012Interface01Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('2012Interface02Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+         "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+  
+  
+      ///////////////// Windows 2022 NIC CREATION /////////////////
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('2022Interface01Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+         "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+  
+  
+      ///////////////// Windows 2022 NIC CREATION /////////////////
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('2008Interface01Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+         "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+  
+  
+      ///////////////// Ubuntu NIC CREATION /////////////////
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('UbuntuInterface01Name')]",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/publicIpAddresses/', variables('UbuntuIpAddressName'))]"
+        ],
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic",
+                "publicIpAddress": {
+                  "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', parameters('UbuntuIpAddressName'))]"
+                }
+              }
+            }
+          ],
+          "dnsSettings": {
+            "dnsServers": [
+              "10.0.0.5"
+            ]
+          }
+        }
+      },
+  
+  
+      //////////////// Ubuntu Public IP /////////////////
+      {
+        "name": "[parameters('publicIpAddressName')]",
+        "type": "Microsoft.Network/publicIpAddresses",
+        "apiVersion": "2019-02-01",
+        "location": "[parameters('location')]",
+        "properties": {
+          "publicIPAllocationMethod": "Static",
+          "publicIPAddressVersion": "IPv4"
+        },
+        "sku": {
+          "name": "Standard"
+        }
+      },
+      {
+        "name": "[parameters('UbuntuIpAddressName')]",
+        "type": "Microsoft.Network/publicIpAddresses",
+        "apiVersion": "2019-02-01",
+        "location": "[parameters('location')]",
+        "properties": {
+          "publicIPAllocationMethod": "Static",
+          "publicIPAddressVersion": "IPv4"
+        },
+        "sku": {
+          "name": "Standard"
+        }
+      },
+  
+  
+      ///////////////// Windows 10 NIC CREATION /////////////////
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('Win10Interface01Name')]",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"
+        ],
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic",
+                "publicIpAddress": {
+                  "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
+                }
+              }
+            }
+          ],
+          "dnsSettings": {
+            "dnsServers": [
+              "10.0.0.5"
+            ]
+          }
+        }
+      },
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('Win10Interface02Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+         "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('Win10Interface03Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+         "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+  
+  
+  
+  
+  
+  
+  
+      ///////////////// Windows 11 NIC CREATION /////////////////
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('Win11Interface01Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+         "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('Win11Interface02Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+         "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-03-01",
+        "name": "[parameters('Win11Interface03Name')]",
+        "location": "[parameters('location')]",
+        "properties": {
+         "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnet1Ref')]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        }
+      },
+  
+
+      ////////////// VM CREATION ////////////////////////////
+  
+      ///////////////// Windows 2019 VM CREATION /////////////////        
+      {
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2021-07-01",
+        "name": "[parameters('2019virtualMachine01Name')]",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkInterfaces/', parameters('2019Interface01Name'))]"
+        ],
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "[parameters('virtualMachineSize')]"
+          },
+          "storageProfile": {
+            "osDisk": {
+              "createOption": "fromImage"
+            },
+            "imageReference": {
+              "publisher": "MicrosoftWindowsServer",
+              "offer": "WindowsServer",
+              "sku": "2019-datacenter-gensecond",
+              "version": "latest"
+            }
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('2019Interface01Name'))]"
+              }
+            ]
+          },
+          "osProfile": {
+            "computerName": "[parameters('2019virtualMachine01Name')]",
+            "adminUsername": "[parameters('adminUsername')]",
+            "adminPassword": "[parameters('adminPassword')]",
+            "windowsConfiguration": {
+              "enableAutomaticUpdates": true,
+              "provisionVmAgent": true
+            }
+          }
+        }
+      },
+   {
+      "comments": "Join domain - JsonADDomainExtension",
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "dependsOn": [
+        "[parameters('2019virtualMachine01Name')]"
+      ],
+      "name": "[parameters('2019virtualMachine01Name')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publisher": "Microsoft.Compute",
+        "type": "JsonADDomainExtension",
+        "typeHandlerVersion": "1.3",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "Name": "[parameters('domainFQDN')]",
+          "User": "[parameters('domainJoinUserName')]",
+          "Restart": "true",
+          "Options": "[variables('domainJoinOptions')]"
+        },
+        "protectedSettings": {
+          "Password": "[parameters('domainJoinUserPassword')]"
+        }
+      }
+    }
+  
+  
+],
+  
+  
+  
+    "outputs": {
+      "adminUsername": {
+        "type": "String",
+        "value": "[parameters('adminUsername')]"
+      }
+    }
+  }

@@ -573,7 +573,10 @@
     "adfs1name": "[concat(parameters('NamingConvention'),'-adfs-01')]",           
     "adfs1IP": "[concat(parameters('vnet1ID'),'.1.',variables('adfs1lastoctet'))]",  
     "adfs1lastoctet": "121",
-    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
+    "configureADNextDCTemplateUri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/configureADNextDC.json',parameters('_artifactsLocationSasToken')))]",
+    "nextDCConfigurationModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/ConfigureADNextDC.ps1.zip',parameters('_artifactsLocationSasToken')))]",
+    "nextDCConfigurationFunction": "ConfigureADNextDC.ps1\\ConfigureADNextDC"
   },  
   "resources": [
     {
@@ -923,6 +926,49 @@
                   "value": "[resourceGroup().location]"
               }
           }
+      }
+    },
+    {
+      "name": "ConfiguringRootDC2",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "dependsOn": [
+       "createsites"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configureADNextDCTemplateUri')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "adNextDCVMName": {
+            "value": "[variables('dc1name')]"
+          },
+          "location": {
+            "value": {
+                  "value": "[resourceGroup().location]"
+              }
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "domainName": {
+            "value": "[variables('InternaldomainName')]"
+          },
+          "DNSServer": {
+            "value": "[variables('dc1IP')]"
+          },
+          "adNextDCConfigurationFunction": {
+            "value": "[variables('nextDCConfigurationFunction')]"
+          },
+          "adNextDCConfigurationModulesURL": {
+            "value": "[variables('nextDCConfigurationModulesURL')]"
+          }
+        }
       }
     },
     {
