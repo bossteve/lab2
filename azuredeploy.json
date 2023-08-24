@@ -575,7 +575,7 @@
     "adfs1lastoctet": "121",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "configureADNextDCTemplateUri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/configureADNextDC.json',parameters('_artifactsLocationSasToken')))]",
-    "nextDCConfigurationModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/ConfigureADNextDC.ps1.zip',parameters('_artifactsLocationSasToken')))]",
+    "nextDCConfigurationModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/ConfigureADNextDC.zip',parameters('_artifactsLocationSasToken')))]",
     "nextDCConfigurationFunction": "ConfigureADNextDC.ps1\\ConfigureADNextDC"
   },  
   "resources": [
