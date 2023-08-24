@@ -188,14 +188,14 @@
     }, 
     "CertSubjectName": {
       "type": "string",
-      "defaultValue": "*.wingtip.toys",
+      "defaultValue": "*.democontoso.net",
       "metadata":{
         "description": "The exact subject name for your cert pfx"
       }
     },                                     
     "ExchangeOrgName": {
       "type": "string",
-      "defaultValue": "wingtip",
+      "defaultValue": "democontoso",
       "metadata": {
         "description": "Enter an Exchange Organization Name"
       }
@@ -284,7 +284,7 @@
     },     
     "NetBiosDomain": {
       "type": "string",
-      "defaultValue": "wingtip",
+      "defaultValue": "democontoso",
       "maxLength": 15,      
       "metadata": {
           "description": "NetBios Domain Name"
@@ -292,14 +292,14 @@
     },   
     "InternalDomain": {
       "type": "string",
-      "defaultValue": "wingtip",
+      "defaultValue": "democontoso",
       "metadata": {
           "description": "NetBios Domain Name"
       }
     },      
     "InternalTLD": {
       "type": "string",
-      "defaultValue": "toys",
+      "defaultValue": "net",
       "allowedValues": [
         "com",
         "net",
@@ -319,14 +319,14 @@
     },    
     "ExternalDomain": {
       "type": "string",
-      "defaultValue": "wingtip",
+      "defaultValue": "democontoso",
       "metadata": {
           "description": "External DNS Domain"
       }
     },    
     "ExternalTLD": {
       "type": "string",
-      "defaultValue": "toys",
+      "defaultValue": "net",
       "allowedValues": [
         "com",
         "net",
@@ -485,7 +485,7 @@
     },
     "AllowedRDPIP": {
       "type": "string",
-      "defaultValue": "64.112.217.34",
+      "defaultValue": "138.43.92.115",
       "metadata": {
           "description": "IP Address for remote access"
       }
@@ -944,11 +944,9 @@
         "parameters": {
           "adNextDCVMName": {
             "value": "[variables('dc1name')]"
-          },
+          },                                                                                                                                                                                                                                                                                                           
           "location": {
-            "value": {
-                  "value": "[resourceGroup().location]"
-              }
+              "value": "[resourceGroup().location]"
           },
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
