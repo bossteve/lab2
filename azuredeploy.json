@@ -175,7 +175,7 @@
     },  
     "CertURL":{
       "type": "string",
-      "defaultValue": "https://www.bozteck.com/wildcard_wingtip_toys.pfx",
+      "defaultValue": "https://shares.blob.core.windows.net/shared/wildcard_democontoso_net.pfx",
       "metadata": {
         "description": "URL to PFX file.  Must be wildcart (for now)"
         }
@@ -539,9 +539,12 @@
     "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",    
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
-    "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
+    "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",  
+    "dc2name": "[concat(parameters('NamingConvention'),'-dc-02')]",  
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]", 
-    "dc1lastoctet": "101",           
+    "dc2IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc2lastoctet'))]", 
+    "dc1lastoctet": "101",
+    "dc2lastoctet": "102",
     "Server1name": "[concat(parameters('NamingConvention'),'-Server1')]",           
     "Server1IP": "[concat(parameters('vnet1ID'),'.1.',variables('Server1lastoctet'))]",            
     "Server1lastoctet": "99",                                                                      
@@ -627,6 +630,74 @@
               },
               "computerIP": {
                   "value": "[variables('dc1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('DC1OSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "DataDisk1Name": {
+                "value": "[variables('DCDataDisk1Name')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('DC1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },  
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },              
+              "AutoShutdownEnabled": {
+                  "value": "[parameters('AutoShutdownEnabled')]"
+              },                            
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                                                                                                                                                                          
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deployDC2VM",
+      "dependsOn": [
+        "updatevnet1dns"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-2disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc2name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('dc2IP')]"
               },
               "Publisher": {
                   "value": "MicrosoftWindowsServer"
