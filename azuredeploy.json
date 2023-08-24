@@ -943,11 +943,12 @@
         },
         "parameters": {
           "adNextDCVMName": {
-            "value": "[variables('dc1name')]"
+            "value": "[variables('dc2name')]"
           },                                                                                                                                                                                                                                                                                                           
           "location": {
               "value": "[resourceGroup().location]"
           },
+
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
