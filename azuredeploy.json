@@ -687,7 +687,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployDC2VM",
       "dependsOn": [
-        "updatevnet1dns"
+        "createsites"
       ],      
       "properties": {
           "mode": "Incremental",
