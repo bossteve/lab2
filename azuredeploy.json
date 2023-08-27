@@ -938,9 +938,9 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('configureADNextDCTemplateUri')]",
-          "contentVersion": "1.0.0.0"
-        },
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/configureADNextDC.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
         "parameters": {
           "adNextDCVMName": {
             "value": "[variables('dc2name')]"

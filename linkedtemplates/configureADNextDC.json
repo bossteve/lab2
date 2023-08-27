@@ -44,7 +44,6 @@
           "properties": {
             "domainName": "[parameters('domainName')]",
             "DNSServer": "[parameters('DNSServer')]",
-            "DNSForwarder": "[parameters('DNSServer')]",
             "adminCreds": {
               "userName": "[parameters('adminUserName')]",
               "password": "privateSettingsRef:adminPassword"
