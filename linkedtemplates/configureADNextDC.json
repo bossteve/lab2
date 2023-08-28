@@ -31,12 +31,12 @@
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(parameters('adNextDCVMName'),'/PrepareNextDC')]",
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2019-03-01",
       "location": "[parameters('location')]",
       "properties": {
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
-        "typeHandlerVersion": "2.26",
+        "typeHandlerVersion": "2.19",
         "autoUpgradeMinorVersion": true,
         "settings": {
           "modulesURL": "[parameters('adNextDCConfigurationModulesURL')]",
