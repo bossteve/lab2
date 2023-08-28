@@ -36,7 +36,7 @@
       "properties": {
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
-        "typeHandlerVersion": "3.0.0",
+        "typeHandlerVersion": "3.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
           "modulesURL": "[parameters('adNextDCConfigurationModulesURL')]",
