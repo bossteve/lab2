@@ -934,7 +934,7 @@
       "apiVersion": "2019-10-01",
       "name": "DomainJoinDc2",
       "dependsOn": [
-        "createsites"
+        "deployDC2VM"
       ],      
       "properties": {
           "mode": "Incremental",
