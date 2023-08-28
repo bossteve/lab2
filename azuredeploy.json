@@ -999,12 +999,12 @@
           },
           "DNSServer": {
             "value": "[variables('dc1IP')]"
-          },
-          "adNextDCConfigurationFunction": {
-            "value": "[variables('nextDCConfigurationFunction')]"
-          },
-          "adNextDCConfigurationModulesURL": {
-            "value": "[variables('nextDCConfigurationModulesURL')]"
+          },           
+          "_artifactsLocation": {
+            "value": "[parameters('_artifactsLocation')]"
+          },                                                                                                            
+          "_artifactsLocationSasToken": {
+            "value": "[parameters('_artifactsLocationSasToken')]"
           }
         }
       }

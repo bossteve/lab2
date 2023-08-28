@@ -20,13 +20,23 @@
     "domainName": {
       "type": "string"
     },
-    "adNextDCConfigurationFunction": {
-      "type": "string"
-    },
-    "adNextDCConfigurationModulesURL": {
-      "type": "string"
-    }
+        "_artifactsLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of resources, such as templates and DSC modules, that the template depends on"
+            }
+        },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Auto-generated token to access _artifactsLocation"
+            }
+        }  
   },
+  "variables": {
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/ConfigureADNextDC.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "ConfigureADNextDC.ps1\\ConfigureADNextDC"
+    },
   "resources": [
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
@@ -39,8 +49,8 @@
         "typeHandlerVersion": "2.19",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "modulesURL": "[parameters('adNextDCConfigurationModulesURL')]",
-          "configurationFunction": "[parameters('adNextDCConfigurationFunction')]",
+          "modulesURL": "[variables('modulesUrl')]",
+          "configurationFunction": "[variables('configurationFunction')]",
           "properties": {
             "domainName": "[parameters('domainName')]",
             "DNSServer": "[parameters('DNSServer')]",
