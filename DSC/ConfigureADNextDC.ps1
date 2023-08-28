@@ -15,7 +15,11 @@
         [Int]$RetryIntervalSec=30
     )
 
-    Import-DscResource -ModuleName xActiveDirectory, xStorage, xNetworking, ComputerManagementDSC
+    Import-DscResource -ModuleName xStorage
+    Import-DscResource -ModuleName xNetworking
+    Import-DscResource -ModuleName ComputerManagementDSC
+    Import-DscResource -ModuleName xActiveDirectory
+   #  Import-DscResource -ModuleName xActiveDirectory, xStorage, xNetworking, ComputerManagementDSC
 
     [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
     $Interface = Get-NetAdapter | Where-Object Name -Like "Ethernet*" | Select-Object -First 1
