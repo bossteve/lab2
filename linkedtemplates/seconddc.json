@@ -20,53 +20,55 @@
     "domainName": {
       "type": "string"
     },
-        "_artifactsLocation": {
-            "type": "string",
-            "metadata": {
-                "description": "The location of resources, such as templates and DSC modules, that the template depends on"
-            }
-        },
-        "_artifactsLocationSasToken": {
-            "type": "securestring",
-            "metadata": {
-                "description": "Auto-generated token to access _artifactsLocation"
-            }
-        }                
+    "_artifactsLocation": {
+        "type": "string",
+        "metadata": {
+            "description": "The location of resources, such as templates and DSC modules, that the template depends on"
+        }
     },
+    "_artifactsLocationSasToken": {
+        "type": "securestring",
+        "metadata": {
+            "description": "Auto-generated token to access _artifactsLocation"
+        }
+    }  
+
+    },
+
     "variables": {
         "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/SECONDDC.zip', parameters('_artifactsLocationSasToken')))]",
         "ConfigurationFunction": "SECONDDC.ps1\\SECONDDC"
     },
     "resources": [
-        {
-            "name": "[concat(parameters('computerName'),'/Microsoft.Powershell.DSC')]",
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "2019-03-01",
-            "location": "[parameters('location')]",
-            "properties": {
-                "publisher": "Microsoft.Powershell",
-                "type": "DSC",
-                "typeHandlerVersion": "2.26",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                    "ModulesUrl": "[variables('modulesUrl')]",
-                    "ConfigurationFunction": "[variables('configurationFunction')]",
-                        "Properties": {
-                            "TimeZone": "[parameters('TimeZone')]",
-                            "DomainName": "[parameters('domainName')]",
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",
-                            "AdminCreds": {
-                                "UserName": "[parameters('adminUsername')]",
-                                "Password": "PrivateSettingsRef:AdminPassword"
-                            }
-                        }
-                },
-                "protectedSettings": {
-                    "Items": {
-                        "AdminPassword": "[parameters('adminPassword')]"
-                    }
-                }                
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('adNextDCVMName'),'/PrepareSecondDC')]",
+      "apiVersion": "2019-12-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publisher": "Microsoft.Powershell",
+        "type": "DSC",
+        "typeHandlerVersion": "2.21",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "modulesURL": "[variables('ModulesURL')]",
+          "configurationFunction": "[variables('ConfigurationFunction')]",
+          "properties": {
+            "domainName": "[parameters('domainName')]",
+            "DNSServer": "[parameters('DNSServer')]",
+            "DNSForwarder": "[parameters('DNSServer')]",
+            "adminCreds": {
+              "userName": "[parameters('adminUserName')]",
+              "password": "privateSettingsRef:adminPassword"
             }
+          }
+        },
+        "protectedSettings": {
+          "items": {
+            "adminPassword": "[parameters('adminPassword')]"
+          }
         }
-    ]
+      }
+    }
+  ]
 }
