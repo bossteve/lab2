@@ -1544,9 +1544,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployex1",
-      "condition": "[
-        parameters('DeployExchange')
-      ]",
+      "condition": "[equals(parameters('DeployExchange'), 'True')]",
       "dependsOn": [
         "createous"
       ],      
