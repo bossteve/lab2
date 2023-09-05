@@ -192,7 +192,13 @@
       "metadata":{
         "description": "The exact subject name for your cert pfx"
       }
-    },                                     
+    },
+    "DeployExchange": {
+      "type": "bool",
+      "metadata": {
+        "description": "Deploy Exchange?"
+      }
+    },
     "ExchangeOrgName": {
       "type": "string",
       "defaultValue": "democontoso",
@@ -828,7 +834,8 @@
               },                         
               "DNSServerIP": {
                 "value": [
-                  "[variables('dc1IP')]"
+                  "[variables('dc1IP')]",
+                  "[variables('dc2IP')]"
                 ]
               },                                                                                                            
               "location": {
@@ -1537,6 +1544,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployex1",
+      "condition": "[
+        parameters('DeployExchange')
+      ]",
       "dependsOn": [
         "createous"
       ],      
@@ -1716,7 +1726,7 @@
       }
     },                                                                                  
     {
-      "condition": "[equals(parameters('CU22'),'No')]",            
+      "condition": "[and(equals(parameters('CU22'),'No'), parameters('DeployExchange'))]",            
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "prepareadexchange16",
