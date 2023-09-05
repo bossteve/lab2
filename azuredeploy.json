@@ -1726,7 +1726,7 @@
       }
     },                                                                                  
     {
-      "condition": "[and(equals(parameters('CU22'),'No'), parameters('DeployExchange'))]",            
+      "condition": "[equals(parameters('CU22'),'No')]",            
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "prepareadexchange16",
